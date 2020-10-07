@@ -1,0 +1,28 @@
+﻿
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/_LayoutPage1.cshtml";
+}
+
+<div class="padding-all">
+    <div class="header">
+        <h1>GESTIONAR NOTICIAS</h1>
+    </div>
+
+    <div class="design-w3l">
+        <div class="mail-form-agile">
+            <form action="Verificar" method="post">
+                <input type="text" name="cNombreUsuario" placeholder="usuario" required="" />
+                <input type="password" name="cClaveUsuario" class="padding" placeholder="contraseña" required="" />
+                <input type="submit" value="ingresar">
+            </form>
+        </div>
+        <div class="clear"> </div>
+    </div>
+
+
+</div>
+@Html.ActionLink("Volver a Noticias", "InicioNoticias")
+<div class="footer">
+    <p>© 2020  Epartners  Todos los derechos reservados </p>
+</div>

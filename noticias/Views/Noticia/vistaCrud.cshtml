@@ -1,0 +1,45 @@
+﻿
+@model  List<noticias.Models.Noticia>
+
+@{
+    ViewBag.Title = "vistaCrud";
+    Layout = "~/Views/_LayoutPage1.cshtml";
+}
+
+<h2>vistaCrud</h2>
+@Html.ActionLink("Crear", "Crear")
+
+<table id="tablaNoticias" style="width:500px">
+    <thead>
+        <tr>
+            <th> ID</th>
+            <th>Titulo Noticia</th>
+            <th>Fecha Publicado</th>
+            <th>Autor</th>
+            <th>Usuario</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.nIdPublicacion</td>
+                <td>@item.cTituloPublicacion</td>
+                <td>@item.dFechaPublicacion</td>
+                <td>@item.idAutor</td>
+                <td>@item.cUsuCodigo</td>
+                <td>
+                    <ul>
+                        <a title="Eliminar" onclick="return confirm('¿Esta seguro?');" href="~/Noticia/EliminarNoticia/@item.nIdPublicacion">X</a>
+                        @Html.ActionLink("Editar", "Editar", new { id = item.nIdPublicacion })
+
+                    </ul>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+<br>
+@Html.ActionLink("Cerrar sesion y volver a voticias", "InicioNoticias")

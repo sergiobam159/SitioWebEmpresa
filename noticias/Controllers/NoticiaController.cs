@@ -107,33 +107,37 @@ namespace noticias.Controllers
         [HttpPost]
         public ActionResult Crear(Noticia noticia)
         {
-           
+
             //crear imagen
             try
             {
-              
-                
-               /*
-              MemoryStream target = new MemoryStream();
-              Request.Files["Img.img"].InputStream.CopyTo(target);
-             //   noticia.Img.img = target.ToArray();
-       */
-                
-               
+
+
+                /*
+                MemoryStream target = new MemoryStream();
+                Request.Files["Img.img"].InputStream.CopyTo(target);
+                noticia.Img.img = target.ToArray();
+                */
+
+                /*
+                Stream fs = Request.Files["Img.img"].InputStream;
+                BinaryReader br = new BinaryReader(fs);
+                noticia.Img.img = br.ReadBytes((Int32)fs.Length);
+                */
+
+
                 //ESTO ES TODO, REQUES FILES LLEGA EN FORMATO HHTTPPOSTEDFILEBASE se asigna a webimage en ing LUEGO ES CONVIERTE A BYTE PAR QUE PUEDA SER INGRESADO A LA BASE DE DATOS
-                   
+                
                 noticia.Img.imagen = Request.Files["Img.imagen"]; 
                 WebImage imagen = new WebImage(noticia.Img.imagen.InputStream);
                noticia.Img.img = imagen.GetBytes();
-
+               
                 // conversor a base 64
-                var im = Convert.ToBase64String(noticia.Img.img);
-
+                string br  = Convert.ToBase64String(noticia.Img.img);
+                
                 //im.Substring(im.LastIndexOf(',') + 1);
 
                 //ESTOY INTENTANDO CONVERTIRLO A BASE64 USANDO READALLBYTES DEL FILENAME, MEJOR USO MEMORY STREAM
-                byte[] arregloimagen = System.IO.File.ReadAllBytes(noticia.Img.imagen.FileName);
-                string base64 = Convert.ToBase64String(arregloimagen);
 
 
 
@@ -144,7 +148,7 @@ namespace noticias.Controllers
                 cmd = new SqlCommand("InsertarImagen", con);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add("@descripcion", SqlDbType.VarChar).Value = noticia.Img.descripcion;
-                cmd.Parameters.Add("@imagen", SqlDbType.VarBinary).Value = base64;
+                cmd.Parameters.Add("@imagen", SqlDbType.VarChar).Value = br;
                 
                 cmd.ExecuteNonQuery();
 

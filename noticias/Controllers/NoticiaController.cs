@@ -335,6 +335,7 @@ namespace noticias.Controllers
 
 
                     Noticia n = new Noticia();
+                    n.Img = new Imagen();
                     n.NIdPublicacion = Convert.ToInt16(dr["nIdPublicacion"]);
                     n.DFechaPublicacion = Convert.ToDateTime(dr["dFechaPublicacion"]);
                     n.CContenidoPublicacion = Convert.ToString(dr["cContenidoPublicacion"]);
@@ -347,8 +348,9 @@ namespace noticias.Controllers
                     //VIDEO[idVideo]
                     n.IdAutor = Convert.ToInt16(dr["idAutor"]);
                     //imagen ↓
-                   // n.Img.img = (byte[])(dr["iImagen"]);
-
+                   
+                    string base64= (Convert.ToString(dr["iImagen"]));
+                    n.Img.Base64String = base64;
                     lista.Add(n);
                 }
             }
@@ -360,13 +362,6 @@ namespace noticias.Controllers
 
         }
         #endregion
-        #region ObtenerImagen
-
-        public Imagen ObtenerImagen(int id)
-        {
-            Imagen imagen = new Imagen();
-            return imagen;
-        }
-        #endregion
+       
     }
 }

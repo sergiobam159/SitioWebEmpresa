@@ -19,7 +19,7 @@ namespace noticias.Models
         public int idVideo;
         public int idAutor;
         public int nIdNoticia_Imagen;
-        private Imagen img;
+        public Imagen img;
 
         public int NIdPublicacion { get => nIdPublicacion; set => nIdPublicacion = value; }
         public DateTime DFechaPublicacion { get => dFechaPublicacion; set => dFechaPublicacion = value; }

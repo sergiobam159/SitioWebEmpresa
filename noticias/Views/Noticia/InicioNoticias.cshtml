@@ -95,7 +95,7 @@
                 <hr>
                 <div class="row">
                     <h5>@Model[0].cSubtitulo</h5>
-                    <div class="col-sm-4"><p>@Model[0].cTextoSubtitulo</p></div>
+                    <div class="col-sm-4"><p style="text-align: justify">@Model[0].cTextoSubtitulo</p></div>
                     <div class="col-sm-8"><img src="images/portafolio/Interfaz.png" title="imagenNoticiaSecundaria" id="imagenNoticiaSecundaria"><p>descripcion imagen secundaria</p></div>
 
                 </div>
@@ -103,7 +103,16 @@
 
                 <br>
                 <p>
-                    @Model[0].cContenidoPublicacion
+                    @{ 
+
+                        string[] textos = Model[0].cContenidoPublicacion.Split('*');
+
+                        for(int i= 0; i < textos.Length; i++)
+                        {
+                            <p style="text-align: justify">@textos[i] </p>
+                        }
+
+                    }
                 </p>
 
                 <hr>

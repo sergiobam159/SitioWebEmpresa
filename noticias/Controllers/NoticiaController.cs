@@ -246,28 +246,7 @@ namespace noticias.Controllers
                 
 
 
-            /*
-             da.SelectCommand = cmd;
-             da.Fill(dt);
-             if (dt.Rows.Count == 1)
-             {
-                 noticia.nIdPublicacion = Convert.ToInt32(dt.Rows[0][0].ToString());
-                 noticia.dFechaPublicacion = Convert.ToDateTime(dt.Rows[0][1].ToString());
-                 noticia.cContenidoPublicacion = dt.Rows[0][2].ToString();
-                 noticia.cTituloPublicacion = dt.Rows[0][3].ToString();
-                 noticia.cLugarDePublicacion = dt.Rows[0][4].ToString();
-                 noticia.cUsuCodigo = Convert.ToInt32(dt.Rows[0][5].ToString());
-                 noticia.nidNoticia_seccion = Convert.ToInt32(dt.Rows[0][6].ToString());
-                 noticia.cSubtitulo = dt.Rows[0][7].ToString();
-                 noticia.cTextoSubtitulo = dt.Rows[0][8].ToString();
-                 //noticia.IdVideo = Convert.ToInt32(dt.Rows[0][9].ToString());
-                 noticia.idAutor = Convert.ToInt32(dt.Rows[0][10].ToString());
-                 //noticia.nIdNoticia_Imagen = Convert.ToInt32(dt.Rows[0][11].ToString());
-
-             }
-             else 
-                 return RedirectToAction("vistaCrud", "Noticia");
-                 */
+            
         }
 
 
@@ -309,7 +288,6 @@ namespace noticias.Controllers
 
         }
         #endregion
-
         #region inicio
 
         public ActionResult InicioNoticias()
@@ -385,6 +363,22 @@ namespace noticias.Controllers
 
         }
         #endregion
-       
+        #region VerNoticiaSeleccionada
+        /*
+         PRIMERO SE OBTIENE LA NOTICIA DESDE EL VIEW, SE RECIBE EL ID DE LA NOTICIA SELECCIONADA
+         SE BUSCA ESA NOTICIA EN LA BASE DE DATOS Y SE GUARDA EN UN OBJETO NOTICIA
+         SE LISTA LAS ULTIMAS NOTICIAS CREADAS EN LA BD
+         SE AÑADE LA NOTICIA SELEECIONADA DENTRO DE LA LISTA COMO PRIMER ELEMENTO O ULTIMO
+         SE MUESTRA LA VISTA CON EL ELEMENTO SELECCIONADO Y SE MUESTRAN LOS DEMAS ELEMENTOS COMO OPCIONES SELEECCIONABLES
+             */
+        public ActionResult NoticiaEspecifica()
+        {
+            List<Noticia> noticias = new List<Noticia>();
+
+
+            return View(noticias);
+        }
+        
+        #endregion
     }
 }

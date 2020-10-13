@@ -7,6 +7,10 @@ Note: Licence under Creative Commons Attribution 3.0
 @import url("https://fonts.googleapis.com/css?family=Montserrat:400,700,900");
 @import url("font-awesome.css");
 @import url("animate.css");
+
+p{
+    text-align: justify;
+}
 #imagenNoticiaSecundaria {
 	width: 100%;
 }

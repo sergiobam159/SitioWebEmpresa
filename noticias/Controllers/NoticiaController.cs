@@ -104,6 +104,8 @@ namespace noticias.Controllers
 
         }
 
+      
+
         [HttpPost]
         public ActionResult Crear(Noticia noticia)
         {
@@ -113,20 +115,13 @@ namespace noticias.Controllers
             {
 
 
-                /*
-                MemoryStream target = new MemoryStream();
-                Request.Files["Img.img"].InputStream.CopyTo(target);
-                noticia.Img.img = target.ToArray();
-                */
-
-                /*
-                Stream fs = Request.Files["Img.img"].InputStream;
-                BinaryReader br = new BinaryReader(fs);
-                noticia.Img.img = br.ReadBytes((Int32)fs.Length);
+               /*
+                Dentro de Imagen tengo un objeto httppostedfile, donde se guarda el archivo img, luego se convierte a WebImage, y luego el webimage se convierte en bytes
+                y se almacena dentro de una variable byte[] en img, finalmente se convierte en un string base64 para ser enviado a la base de datos como un nVarchar
                 */
 
 
-                //ESTO ES TODO, REQUES FILES LLEGA EN FORMATO HHTTPPOSTEDFILEBASE se asigna a webimage en ing LUEGO ES CONVIERTE A BYTE PAR QUE PUEDA SER INGRESADO A LA BASE DE DATOS
+                //SOPORTA IMAGENES MENORES A 4MB CUALQUIER RESOLUCION
                 
                 noticia.Img.imagen = Request.Files["Img.imagen"]; 
                 WebImage imagen = new WebImage(noticia.Img.imagen.InputStream);
@@ -135,9 +130,7 @@ namespace noticias.Controllers
                 // conversor a base 64
                 string br  = Convert.ToBase64String(noticia.Img.img);
                 
-                //im.Substring(im.LastIndexOf(',') + 1);
-
-                //ESTOY INTENTANDO CONVERTIRLO A BASE64 USANDO READALLBYTES DEL FILENAME, MEJOR USO MEMORY STREAM
+                
 
 
 
@@ -158,6 +151,9 @@ namespace noticias.Controllers
             {
                 throw e;
             }
+
+
+
             //obtener id de ultima imagen insertada
             int idImagen = new int();
             try
@@ -166,25 +162,23 @@ namespace noticias.Controllers
                 con.Open();
                 cmd = new SqlCommand("ObtenerUltimaImagen", con);
                 cmd.CommandType = CommandType.StoredProcedure;
-           
+
                 SqlDataReader dr = cmd.ExecuteReader();
 
                 if (dr.Read())
                 {
                     Imagen img = new Imagen();
                     img.idImagen = Convert.ToInt16(dr["nIdNoticia.Pubimagen"]);
-                    idImagen = img.idImagen;               
+                    idImagen = img.idImagen;
                 }
 
                 con.Close();
+               
             }
             catch (Exception e)
             {
                 throw e;
             }
-
-
-
 
 
             try
@@ -202,9 +196,9 @@ namespace noticias.Controllers
                 cmd.Parameters.Add("@contenido", SqlDbType.VarChar).Value = noticia.cContenidoPublicacion;
                 cmd.Parameters.Add("@subtitulo", SqlDbType.VarChar).Value = noticia.cSubtitulo;
                 cmd.Parameters.Add("@textoSubtitulo", SqlDbType.VarChar).Value = noticia.cTextoSubtitulo;
-                //      cmd.Parameters.Add("@videoId", SqlDbType.Int).Value = noticia.idVideo;
-                  cmd.Parameters.Add("@imagenId", SqlDbType.Int).Value =idImagen ;
-                //SE TIENE QUE INVESTIGAR COMO INGRESAR IMAGENES Y VIDEO POR AHORA SON NULL en el stored procedure y aqui
+                // NO VIDEO >:c     cmd.Parameters.Add("@videoId", SqlDbType.Int).Value = noticia.idVideo;
+                cmd.Parameters.Add("@imagenId", SqlDbType.Int).Value = idImagen;
+               
                 cmd.ExecuteNonQuery();
 
                 con.Close();
@@ -345,13 +339,42 @@ namespace noticias.Controllers
                     n.NidNoticia_seccion = Convert.ToInt16(dr["nidNoticia.Seccion"]);
                     n.CSubtitulo = Convert.ToString(dr["csubtitulo"]);
                     n.CTextoSubtitulo = Convert.ToString(dr["cTextoSubtitulo"]);
+
+                    n.NombreDeSeccion = Convert.ToString(dr["cNombreSeccion"]);
+                    n.DescripcionDeImagen = Convert.ToString(dr["cDescripcion"]);
+                    n.NombreAutor = Convert.ToString(dr["cNombre"]);
+                    n.ApellidoAutor = Convert.ToString(dr["cApellido"]);
                     //VIDEO[idVideo]
                     n.IdAutor = Convert.ToInt16(dr["idAutor"]);
                     //imagen ↓
-                   
                     string base64= (Convert.ToString(dr["iImagen"]));
                     n.Img.Base64String = base64;
                     lista.Add(n);
+
+
+                    /*
+                 [nIdPublicacion] ok
+      [dFechaPublicacion] ok
+      ,[cContenidoPublicacion] ok
+      ,[cTituloPublicacion] ok
+      ,[cLugarDePublicacion] ok
+      ,[PUBLICACION].[cUsuCodigo] ok
+      [SECCION].[nidNoticia.Seccion] ok
+	  [SECCION].cNombreSeccion no
+      ,[csubtitulo] ok
+      ,[cTextoSubtitulo] ok
+      ,[idVideo], -
+   
+	  [PUBLICACION].idAutor ok
+      ,[PUBLICACION].[nIdNoticia.Pubimagen], no
+	  [IMAGEN].iImagen, ok
+	  [IMAGEN].cDescripcion, no
+	  [IMAGEN].cTipo, no
+	  USUARIO.cNombreUsuario, no
+	  persona.cNombre, no
+	  persona.cApellido   no 
+                 */
+
                 }
             }
             catch (Exception e)

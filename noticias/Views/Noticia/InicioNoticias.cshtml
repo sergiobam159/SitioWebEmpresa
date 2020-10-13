@@ -30,7 +30,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a href="index.html"><img src="images/loglocabeceratest.jpg" alt="logo" /></a>
+                        <a href="http://publicacion.cloudapp.net/"><img src="~/imgs/loglocabeceratest.jpg" alt="logo" /></a>
                     </div>
                     <div class="navbar-collapse collapse ">
                         <ul class="nav navbar-nav">
@@ -38,25 +38,25 @@
                             <li class="dropdown">
                                 <a href="#" data-toggle="dropdown" class="dropdown-toggle">Nosotros <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="about.html#nosotros">Compañia</a></li>
-                                    <li><a href="about.html#nuestroEquipo">Equipo</a></li>
-                                    <li><a href="noticias.html">Noticias</a></li>
-                                    <li><a href="portfolio.html">Investigación</a></li>
+                                    <li><a href="http://publicacion.cloudapp.net/about.html#nosotros">Compañia</a></li>
+                                    <li><a href="http://publicacion.cloudapp.net/about.html#nuestroEquipo">Equipo</a></li>
+                                    <li><a href="http://publicacion.cloudapp.net/portfolio.html">Noticias</a></li>
+                                    <li><a href="http://publicacion.cloudapp.net/portfolio.html">Investigación</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown">
                                 <a href="#" data-toggle="dropdown" class="dropdown-toggle">Plataformas<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="/IntegrationSolutionDev/">V.1 Demos</a></li>
-                                    <li><a href="/IntegrationEnterprise/">V.1 Cosmos</a></li>
-                                    <li><a href="/IntegrationServicio/">V.1 Servicios</a></li>
-                                    <li><a href="/IntegrationSolution/">V.1 E. Partners</a></li>
+                                    <li><a href="http://publicacion.cloudapp.net/IntegrationSolutionDev/">V.1 Demos</a></li>
+                                    <li><a href="http://publicacion.cloudapp.net/IntegrationEnterprise/">V.1 Cosmos</a></li>
+                                    <li><a href="http://publicacion.cloudapp.net/IntegrationServicio/">V.1 Servicios</a></li>
+                                    <li><a href="http://publicacion.cloudapp.net/IntegrationSolution/">V.1 E. Partners</a></li>
                                 </ul>
                             </li>
-                            <li><a href="services.html">Servicios</a></li>
-                            <li><a href="portfolio.html">Portafolio</a></li>
-                            <li><a href="pricing.html#precios">Precios</a></li>
-                            <li><a href="contact.html">Contacto</a></li>
+                            <li><a href="http://publicacion.cloudapp.net/services.html">Servicios</a></li>
+                            <li><a href="http://publicacion.cloudapp.net/portfolio.html">Portafolio</a></li>
+                            <li><a href="http://publicacion.cloudapp.net/pricing.html#precios">Precios</a></li>
+                            <li><a href="http://publicacion.cloudapp.net/contact.html">Contacto</a></li>
                         </ul>
                     </div>
                 </div>
@@ -83,13 +83,13 @@
 
 
             <div class="container">
-                <h4>Seccion</h4>
+                <h4>@Model[0].NombreDeSeccion</h4>
                 <img src="data:image/png;base64,@Model[0].img.base64String" title="imagenNoticia" id="imagenNoticia">
-                <p>descripcion de la imagen</p>
+                <p>@Model[0].DescripcionDeImagen</p>
                 <hr>
                 <h1>@Model[0].cTituloPublicacion</h1>
                 <ul class="list-group list-group-horizontal">
-                    <li class="list-group-item">@Model[0].idAutor</li>
+                    <li class="list-group-item">@Model[0].NombreAutor @Model[0].ApellidoAutor</li>
                     <li class="list-group-item">@Model[0].dFechaPublicacion</li>
                 </ul>
                 <hr>
@@ -105,6 +105,8 @@
                 <p>
                     @Model[0].cContenidoPublicacion
                 </p>
+
+                <hr>
                 <h5>Tambien te podria interesar:</h5>
                 <div class="row">
                     <div class="col-sm-4">
@@ -136,9 +138,7 @@
 
     </div>
 
-    </div>
-    </div>
-    </section>
+   
 
 
 
@@ -225,5 +225,5 @@
         </div>
     </footer>
     </div>
-    <a href="#" class="scrollup"><i class="fa fa-angle-up active"></i></a>d
+    <a href="#" class="scrollup"><i class="fa fa-angle-up active"></i></a>
 

@@ -115,36 +115,39 @@ namespace noticias.Controllers
             {
 
 
-               /*
-                Dentro de Imagen tengo un objeto httppostedfile, donde se guarda el archivo img, luego se convierte a WebImage, y luego el webimage se convierte en bytes
-                y se almacena dentro de una variable byte[] en img, finalmente se convierte en un string base64 para ser enviado a la base de datos como un nVarchar
-                */
+                /*
+                 Dentro de Imagen tengo un objeto httppostedfile, donde se guarda el archivo img, luego se convierte a WebImage, y luego el webimage se convierte en bytes
+                 y se almacena dentro de una variable byte[] en img, finalmente se convierte en un string base64 para ser enviado a la base de datos como un nVarchar
+                 */
 
 
                 //SOPORTA IMAGENES MENORES A 4MB CUALQUIER RESOLUCION
-                
+                List<string> imagenes = new List<string>();
                 noticia.Img.imagen = Request.Files["Img.imagen"]; 
                 WebImage imagen = new WebImage(noticia.Img.imagen.InputStream);
                noticia.Img.img = imagen.GetBytes();
-               
                 // conversor a base 64
                 string br  = Convert.ToBase64String(noticia.Img.img);
-                
-                
+                imagenes.Add(br);
 
-
-
-
+                noticia.ImgSecundaria.imagen = Request.Files["ImgSecundaria.imagen"];
+                WebImage imagenSecundaria = new WebImage(noticia.imgSecundaria.imagen.InputStream);
+                noticia.imgSecundaria.img = imagenSecundaria.GetBytes();
+                br = Convert.ToBase64String(noticia.imgSecundaria.img);
+                imagenes.Add(br);
 
                 con = conexion.Instancia.Conectar();
                 con.Open();
-                cmd = new SqlCommand("InsertarImagen", con);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("@descripcion", SqlDbType.VarChar).Value = noticia.Img.descripcion;
-                cmd.Parameters.Add("@imagen", SqlDbType.VarChar).Value = br;
-                
-                cmd.ExecuteNonQuery();
+                for (int i = 0; i < imagenes.Count(); i++)
 
+                {
+                    cmd = new SqlCommand("InsertarImagen", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add("@descripcion", SqlDbType.VarChar).Value = noticia.Img.descripcion;
+                    cmd.Parameters.Add("@imagen", SqlDbType.VarChar).Value = imagenes[i];
+                    cmd.Parameters.Add("@tipo", SqlDbType.VarChar).Value = i+1;
+                    cmd.ExecuteNonQuery();
+                }
                 con.Close();
             }
             catch (Exception e)
@@ -154,7 +157,7 @@ namespace noticias.Controllers
 
 
 
-            //obtener id de ultima imagen insertada
+            //obtener id de ultima imagen insertada ULTIMA IMAGEN INGRESADA ES LA SEGUNDA DE CADA PUBLICACION
             int idImagen = new int();
             try
             {
@@ -197,10 +200,10 @@ namespace noticias.Controllers
                 cmd.Parameters.Add("@subtitulo", SqlDbType.VarChar).Value = noticia.cSubtitulo;
                 cmd.Parameters.Add("@textoSubtitulo", SqlDbType.VarChar).Value = noticia.cTextoSubtitulo;
                 // NO VIDEO >:c     cmd.Parameters.Add("@videoId", SqlDbType.Int).Value = noticia.idVideo;
-                cmd.Parameters.Add("@imagenId", SqlDbType.Int).Value = idImagen;
-               
+                cmd.Parameters.Add("@imagenIdSecundaria", SqlDbType.Int).Value = idImagen;
+                cmd.Parameters.Add("@imagenId", SqlDbType.Int).Value = idImagen-1;
                 cmd.ExecuteNonQuery();
-
+                //REEMPLAZAR EL JOIN DEIMAGEN Y HACER UN SELEECT A IMAGEN CON EL ID DE LA PUBLICACION
                 con.Close();
             }
             catch (Exception e) {
@@ -296,6 +299,8 @@ namespace noticias.Controllers
             List<Noticia> lista = new List<Noticia>();
             try
             {
+
+
                 con = conexion.Instancia.Conectar();
                 con.Open();
                 cmd = new SqlCommand("[UltimasNoticiasTodosLosDatos]", con);
@@ -308,6 +313,7 @@ namespace noticias.Controllers
 
                     Noticia n = new Noticia();
                     n.Img = new Imagen();
+                    n.imgSecundaria = new Imagen();
                     n.NIdPublicacion = Convert.ToInt16(dr["nIdPublicacion"]);
                     n.DFechaPublicacion = Convert.ToDateTime(dr["dFechaPublicacion"]);
                     n.CContenidoPublicacion = Convert.ToString(dr["cContenidoPublicacion"]);
@@ -325,33 +331,36 @@ namespace noticias.Controllers
                     //VIDEO[idVideo]
                     n.IdAutor = Convert.ToInt16(dr["idAutor"]);
                     //imagen ↓
-                    string base64= (Convert.ToString(dr["iImagen"]));
-                    n.Img.Base64String = base64;
+
+                    
+                    if (!dr.IsDBNull(13))
+                    {
+                        int IdImagenSec = Convert.ToInt16(dr["nIdNoticia.PubimagenSEC"]);
+
+                        SqlConnection conect = new SqlConnection();
+                        conect = conexion.Instancia.Conectar();
+                        conect.Open();
+                        SqlCommand cmdd = new SqlCommand("[ObtenerImagenSecundaria]", conect);
+                        cmdd.CommandType = CommandType.StoredProcedure;
+                        cmdd.Parameters.AddWithValue("@id", IdImagenSec);
+                        SqlDataReader drd = cmdd.ExecuteReader();
+                        if (drd.Read())
+                        {
+                            string base64ImgSec = (Convert.ToString(drd["iImagen"]));
+
+                            n.imgSecundaria.base64String = base64ImgSec;
+                        }
+                        conect.Close();
+
+                    }
+
+                    string base64ImgPrin= (Convert.ToString(dr["iImagen"]));
+                    n.Img.Base64String = base64ImgPrin;
+
                     lista.Add(n);
 
 
-                    /*
-                 [nIdPublicacion] ok
-      [dFechaPublicacion] ok
-      ,[cContenidoPublicacion] ok
-      ,[cTituloPublicacion] ok
-      ,[cLugarDePublicacion] ok
-      ,[PUBLICACION].[cUsuCodigo] ok
-      [SECCION].[nidNoticia.Seccion] ok
-	  [SECCION].cNombreSeccion no
-      ,[csubtitulo] ok
-      ,[cTextoSubtitulo] ok
-      ,[idVideo], -
-   
-	  [PUBLICACION].idAutor ok
-      ,[PUBLICACION].[nIdNoticia.Pubimagen], no
-	  [IMAGEN].iImagen, ok
-	  [IMAGEN].cDescripcion, no
-	  [IMAGEN].cTipo, no
-	  USUARIO.cNombreUsuario, no
-	  persona.cNombre, no
-	  persona.cApellido   no 
-                 */
+                   
 
                 }
             }
@@ -371,14 +380,150 @@ namespace noticias.Controllers
          SE AÑADE LA NOTICIA SELEECIONADA DENTRO DE LA LISTA COMO PRIMER ELEMENTO O ULTIMO
          SE MUESTRA LA VISTA CON EL ELEMENTO SELECCIONADO Y SE MUESTRAN LOS DEMAS ELEMENTOS COMO OPCIONES SELEECCIONABLES
              */
-        public ActionResult NoticiaEspecifica()
+
+            
+            public ActionResult VerNoticiaSeleccionada(int id)
         {
-            List<Noticia> noticias = new List<Noticia>();
+
+            Noticia noticiaSel = new Noticia();
+            SqlDataAdapter da = new SqlDataAdapter();
+            DataTable dt = new DataTable();
+
+            con = conexion.Instancia.Conectar();
+            con.Open();
+            cmd = new SqlCommand("[BuscarNoticiaTodosLosDatos]", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@id", id);
+            SqlDataReader dr = cmd.ExecuteReader();
+            dr.Read();
+            noticiaSel.Img = new Imagen();
+            noticiaSel.imgSecundaria = new Imagen();
+            noticiaSel.NIdPublicacion = Convert.ToInt16(dr["nIdPublicacion"]);
+            noticiaSel.DFechaPublicacion = Convert.ToDateTime(dr["dFechaPublicacion"]);
+            noticiaSel.CContenidoPublicacion = Convert.ToString(dr["cContenidoPublicacion"]);
+            noticiaSel.CTituloPublicacion = Convert.ToString(dr["cTituloPublicacion"]);
+            noticiaSel.CLugarDePublicacion = Convert.ToString(dr["cLugarDePublicacion"]);
+            noticiaSel.CUsuCodigo = Convert.ToInt32(dr["cUsuCodigo"]);
+            noticiaSel.NidNoticia_seccion = Convert.ToInt16(dr["nidNoticia.Seccion"]);
+            noticiaSel.CSubtitulo = Convert.ToString(dr["csubtitulo"]);
+            noticiaSel.CTextoSubtitulo = Convert.ToString(dr["cTextoSubtitulo"]);
+
+            noticiaSel.NombreDeSeccion = Convert.ToString(dr["cNombreSeccion"]);
+            noticiaSel.DescripcionDeImagen = Convert.ToString(dr["cDescripcion"]);
+            noticiaSel.NombreAutor = Convert.ToString(dr["cNombre"]);
+            noticiaSel.ApellidoAutor = Convert.ToString(dr["cApellido"]);
+            //VIDEO[idVideo]
+            noticiaSel.IdAutor = Convert.ToInt16(dr["idAutor"]);
+            //imagen ↓
 
 
-            return View(noticias);
+            if (!dr.IsDBNull(13))
+            {
+                int IdImagenSec = Convert.ToInt16(dr["nIdNoticia.PubimagenSEC"]);
+
+                SqlConnection conect = new SqlConnection();
+                conect = conexion.Instancia.Conectar();
+                conect.Open();
+                SqlCommand cmdd = new SqlCommand("[ObtenerImagenSecundaria]", conect);
+                cmdd.CommandType = CommandType.StoredProcedure;
+                cmdd.Parameters.AddWithValue("@id", IdImagenSec);
+                SqlDataReader drd = cmdd.ExecuteReader();
+                if (drd.Read())
+                {
+                    string base64ImgSec = (Convert.ToString(drd["iImagen"]));
+
+                    noticiaSel.imgSecundaria.base64String = base64ImgSec;
+                }
+                conect.Close();
+
+            }
+
+
+
+
+
+
+            string base64 = (Convert.ToString(dr["iImagen"]));
+            noticiaSel.Img.Base64String = base64;
+            con.Close();
+
+            List<Noticia> lista = new List<Noticia>();
+            lista.Add(noticiaSel);
+            
+                con = conexion.Instancia.Conectar();
+                con.Open();
+                cmd = new SqlCommand("[UltimasNoticiasTodosLosDatos]", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                 dr = cmd.ExecuteReader();
+
+                while (dr.Read())
+                {
+
+
+                    Noticia n = new Noticia();
+                    n.Img = new Imagen();
+                       n.imgSecundaria = new Imagen();
+                    n.NIdPublicacion = Convert.ToInt16(dr["nIdPublicacion"]);
+                    n.DFechaPublicacion = Convert.ToDateTime(dr["dFechaPublicacion"]);
+                    n.CContenidoPublicacion = Convert.ToString(dr["cContenidoPublicacion"]);
+                    n.CTituloPublicacion = Convert.ToString(dr["cTituloPublicacion"]);
+                    n.CLugarDePublicacion = Convert.ToString(dr["cLugarDePublicacion"]);
+                    n.CUsuCodigo = Convert.ToInt32(dr["cUsuCodigo"]);
+                    n.NidNoticia_seccion = Convert.ToInt16(dr["nidNoticia.Seccion"]);
+                    n.CSubtitulo = Convert.ToString(dr["csubtitulo"]);
+                    n.CTextoSubtitulo = Convert.ToString(dr["cTextoSubtitulo"]);
+
+                    n.NombreDeSeccion = Convert.ToString(dr["cNombreSeccion"]);
+                    n.DescripcionDeImagen = Convert.ToString(dr["cDescripcion"]);
+                    n.NombreAutor = Convert.ToString(dr["cNombre"]);
+                    n.ApellidoAutor = Convert.ToString(dr["cApellido"]);
+                    //VIDEO[idVideo]
+                    n.IdAutor = Convert.ToInt16(dr["idAutor"]);
+                //imagen ↓
+
+
+                if (!dr.IsDBNull(13))
+                {
+                    int IdImagenSec = Convert.ToInt16(dr["nIdNoticia.PubimagenSEC"]);
+
+                    SqlConnection conect = new SqlConnection();
+                    conect = conexion.Instancia.Conectar();
+                    conect.Open();
+                    SqlCommand cmdd = new SqlCommand("[ObtenerImagenSecundaria]", conect);
+                    cmdd.CommandType = CommandType.StoredProcedure;
+                    cmdd.Parameters.AddWithValue("@id", IdImagenSec);
+                    SqlDataReader drd = cmdd.ExecuteReader();
+                    if (drd.Read())
+                    {
+                        string base64ImgSec = (Convert.ToString(drd["iImagen"]));
+
+                        n.imgSecundaria.base64String = base64ImgSec;
+                    }
+                    conect.Close();
+
+                }
+
+
+
+                base64 = (Convert.ToString(dr["iImagen"]));
+                    n.Img.Base64String = base64;
+
+                    if (n.NIdPublicacion != noticiaSel.nIdPublicacion)
+                    {
+                        lista.Add(n);
+                    }
+
+
+
+                }
+          
+            return View(lista);
+
         }
+
+       
         
+
         #endregion
     }
 }

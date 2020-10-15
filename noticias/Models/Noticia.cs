@@ -61,10 +61,12 @@ namespace noticias.Models
         public int NIdNoticia_Imagen { get => nIdNoticia_Imagen; set => nIdNoticia_Imagen = value; }
         public string CTituloPublicacion { get => cTituloPublicacion; set => cTituloPublicacion = value; }
         public Imagen Img { get => img; set => img = value; }
+        public Imagen imgSecundaria;
         public string DescripcionDeImagen { get => descripcionDeImagen; set => descripcionDeImagen = value; }
         public string NombreDeSeccion { get => nombreDeSeccion; set => nombreDeSeccion = value; }
         public string NombreAutor { get => nombreAutor; set => nombreAutor = value; }
         public string ApellidoAutor { get => apellidoAutor; set => apellidoAutor = value; }
         public string NombreUsuario { get => nombreUsuario; set => nombreUsuario = value; }
+        public Imagen ImgSecundaria { get => imgSecundaria; set => imgSecundaria = value; }
     }
 }

@@ -96,10 +96,10 @@
                 <div class="row">
                     <h5>@Model[0].cSubtitulo</h5>
                     <div class="col-sm-4"><p style="text-align: justify">@Model[0].cTextoSubtitulo</p></div>
-                    <div class="col-sm-8"><img src="images/portafolio/Interfaz.png" title="imagenNoticiaSecundaria" id="imagenNoticiaSecundaria"><p>descripcion imagen secundaria</p></div>
+                    <div class="col-sm-8"><img src="data:image/png;base64,@Model[0].imgSecundaria.base64String" title="imagenNoticia" id="imagenNoticia"><p>descripcion imagen secundaria</p></div>
 
                 </div>
-
+                
 
                 <br>
                 <p>
@@ -120,21 +120,21 @@
                 <div class="row">
                     <div class="col-sm-4">
                         <div class="panel panel-default">
-                            <div class="panel-heading" id="headingPanel"> <img id="imagenLinkNoticia" src="data:image/png;base64,@Model[1].img.base64String"> </div>
+                            <div class="panel-heading" id="headingPanel"> <a href="~/Noticia/VerNoticiaSeleccionada/@Model[1].NIdPublicacion"> <img id="imagenLinkNoticia" src="data:image/png;base64,@Model[1].img.base64String"></a> </div>
                             <div class="panel-body" id="bodyPanel"> <h5 id="titulo">@Model[1].cTituloPublicacion</h5>   </div>
                             <div class="panel-footer" id="footerPanel"> @Model[1].dFechaPublicacion</div>
                         </div>
                     </div>
                     <div class="col-sm-4">
                         <div class="panel panel-default">
-                            <div class="panel-heading" id="headingPanel"> <img id="imagenLinkNoticia" src="data:image/png;base64,@Model[2].img.base64String"> </div>
+                            <div class="panel-heading" id="headingPanel"> <a href="~/Noticia/VerNoticiaSeleccionada/@Model[2].NIdPublicacion"> <img id="imagenLinkNoticia" src="data:image/png;base64,@Model[2].img.base64String"> </a></div>
                             <div class="panel-body" id="bodyPanel"> <h5 id="titulo">@Model[2].cTituloPublicacion</h5>   </div>
                             <div class="panel-footer" id="footerPanel">@Model[2].dFechaPublicacion</div>
                         </div>
                     </div>
                     <div class="col-sm-4">
                         <div class="panel panel-default">
-                            <div class="panel-heading" id="headingPanel"> <img id="imagenLinkNoticia" src="data:image/png;base64,@Model[3].img.base64String"> </div>
+                            <div class="panel-heading" id="headingPanel"> <a href="~/Noticia/VerNoticiaSeleccionada/@Model[3].NIdPublicacion"> <img id="imagenLinkNoticia" src="data:image/png;base64,@Model[3].img.base64String"> </a> </div>
                             <div class="panel-body" id="bodyPanel"> <h5 id="titulo">@Model[3].cTituloPublicacion</h5>   </div>
                             <div class="panel-footer" id="footerPanel">@Model[3].dFechaPublicacion</div>
                         </div>

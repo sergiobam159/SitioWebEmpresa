@@ -206,6 +206,7 @@
     <Content Include="Views\Noticia\Crear.cshtml" />
     <Content Include="Views\Noticia\Editar.cshtml" />
     <Content Include="Views\Noticia\InicioNoticias.cshtml" />
+    <Content Include="Views\Noticia\VerNoticiaSeleccionada.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

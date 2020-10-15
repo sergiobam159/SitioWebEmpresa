@@ -326,8 +326,8 @@ namespace noticias.Controllers
 
                     n.NombreDeSeccion = Convert.ToString(dr["cNombreSeccion"]);
                     n.DescripcionDeImagen = Convert.ToString(dr["cDescripcion"]);
-                    n.NombreAutor = Convert.ToString(dr["cNombre"]);
-                    n.ApellidoAutor = Convert.ToString(dr["cApellido"]);
+                    n.NombreAutor = Convert.ToString(dr["cPerNombre"]);
+                    n.ApellidoAutor = Convert.ToString(dr["cPerApellido"]);
                     //VIDEO[idVideo]
                     n.IdAutor = Convert.ToInt16(dr["idAutor"]);
                     //imagen ↓

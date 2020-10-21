@@ -136,8 +136,30 @@ namespace noticias.Controllers
                 br = Convert.ToBase64String(noticia.imgSecundaria.img);
                 imagenes.Add(br);
 
+                int idImagen = new int();
                 con = conexion.Instancia.Conectar();
                 con.Open();
+
+
+                cmd = new SqlCommand("InsertarYObtenerImagen", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@descripcion", SqlDbType.VarChar).Value = noticia.Img.descripcion;
+                cmd.Parameters.Add("@imagen", SqlDbType.VarChar).Value = imagenes[0];
+                cmd.Parameters.Add("@tipo", SqlDbType.VarChar).Value = 1;
+                cmd.Parameters.Add("@descripcion2", SqlDbType.VarChar).Value = noticia.Img.descripcion;
+                cmd.Parameters.Add("@imagen2", SqlDbType.VarChar).Value = imagenes[1];
+                cmd.Parameters.Add("@tipo2", SqlDbType.VarChar).Value = 2;
+
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr.Read())
+                {
+                    Imagen img = new Imagen();
+                    img.idImagen = Convert.ToInt16(dr["nIdNoticia.Pubimagen"]);
+                    idImagen = img.idImagen;
+                }
+                /*
                 for (int i = 0; i < imagenes.Count(); i++)
 
                 {
@@ -148,17 +170,14 @@ namespace noticias.Controllers
                     cmd.Parameters.Add("@tipo", SqlDbType.VarChar).Value = i+1;
                     cmd.ExecuteNonQuery();
                 }
+                */
                 con.Close();
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
+           
 
 
 
             //obtener id de ultima imagen insertada ULTIMA IMAGEN INGRESADA ES LA SEGUNDA DE CADA PUBLICACION
-            int idImagen = new int();
+           /* int idImagen = new int();
             try
             {
                 con = conexion.Instancia.Conectar();
@@ -183,9 +202,8 @@ namespace noticias.Controllers
                 throw e;
             }
 
-
-            try
-            {
+            */
+            
                 con = conexion.Instancia.Conectar();
                 con.Open();
                 cmd = new SqlCommand("CREARPUBLICACION", con);
@@ -410,8 +428,8 @@ namespace noticias.Controllers
 
             noticiaSel.NombreDeSeccion = Convert.ToString(dr["cNombreSeccion"]);
             noticiaSel.DescripcionDeImagen = Convert.ToString(dr["cDescripcion"]);
-            noticiaSel.NombreAutor = Convert.ToString(dr["cNombre"]);
-            noticiaSel.ApellidoAutor = Convert.ToString(dr["cApellido"]);
+            noticiaSel.NombreAutor = Convert.ToString(dr["cPerNombre"]);
+            noticiaSel.ApellidoAutor = Convert.ToString(dr["cPerApellido"]);
             //VIDEO[idVideo]
             noticiaSel.IdAutor = Convert.ToInt16(dr["idAutor"]);
             //imagen ↓
@@ -475,8 +493,8 @@ namespace noticias.Controllers
 
                     n.NombreDeSeccion = Convert.ToString(dr["cNombreSeccion"]);
                     n.DescripcionDeImagen = Convert.ToString(dr["cDescripcion"]);
-                    n.NombreAutor = Convert.ToString(dr["cNombre"]);
-                    n.ApellidoAutor = Convert.ToString(dr["cApellido"]);
+                    n.NombreAutor = Convert.ToString(dr["cPerNombre"]);
+                    n.ApellidoAutor = Convert.ToString(dr["cPerApellido"]);
                     //VIDEO[idVideo]
                     n.IdAutor = Convert.ToInt16(dr["idAutor"]);
                 //imagen ↓

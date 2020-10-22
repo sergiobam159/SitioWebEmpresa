@@ -124,10 +124,16 @@ a:active {
 	margin-bottom: 0;
 }
 
+#tablaNoticias{
+    text-align: center;
+    margin: auto;
+}
+
 h1,
 h2 {
 	font-weight: 600;
 	line-height: 1.1em;
+    text-align:center;
 	color: #37393c;
 	font-family: "Montserrat", sans-serif;
 	margin-bottom: 20px;

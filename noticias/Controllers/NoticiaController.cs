@@ -21,14 +21,14 @@ namespace noticias.Controllers
         SqlDataReader dr;
 
         // LISTADO DE NOTICIAS
-        public ActionResult vistaCrud()
+        public ActionResult vistaCrud(int inicial, int elementos)
         {
 
-            return View(ListadoNoticia());
+            return View(ListadoNoticia(inicial,elementos));
         }
         #endregion
         #region lISTADO
-        public List<Noticia> ListadoNoticia()
+        public List<Noticia> ListadoNoticia(int inicial, int elementos)
         {
 
             List<Noticia> lista = new List<Noticia>();
@@ -36,10 +36,11 @@ namespace noticias.Controllers
             {
                 con = conexion.Instancia.Conectar();
                 con.Open();
+                //añadir valores 
                 cmd = new SqlCommand("ListarNoticias", con);
                 cmd.CommandType = CommandType.StoredProcedure;
                 SqlDataReader dr = cmd.ExecuteReader();
-
+                //FALTA AÑADIR VALORES A ESTE PROCEDIMIENTO Y TAMBIEN JALAR LOS VALORES DESDE LA VISTA LUEGO IMPLEMENTAR BOTONES PARA LA VISTA 
                 while (dr.Read())
                 {
 

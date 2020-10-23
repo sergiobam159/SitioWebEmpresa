@@ -36,9 +36,33 @@ namespace noticias.Controllers
             {
                 con = conexion.Instancia.Conectar();
                 con.Open();
-                //añadir valores 
+                int idUltimaPublicacion= 0;
+                cmd = new SqlCommand("obtenerIdultimaPublicacion", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    idUltimaPublicacion = Convert.ToInt16(reader["nIdPublicacion"]);
+                }
+
+                int paginas = idUltimaPublicacion / 10;
+                if (paginas < 1) paginas = 1;
+
+                ViewBag.cantidadDePaginas = paginas;
+
+
+
+                con.Close();
+
+                con = conexion.Instancia.Conectar();
+                con.Open();
                 cmd = new SqlCommand("ListarNoticias", con);
                 cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@inicial", SqlDbType.Int).Value = inicial;
+                cmd.Parameters.Add("@elementos", SqlDbType.Int).Value = elementos;
+
+
                 SqlDataReader dr = cmd.ExecuteReader();
                 //FALTA AÑADIR VALORES A ESTE PROCEDIMIENTO Y TAMBIEN JALAR LOS VALORES DESDE LA VISTA LUEGO IMPLEMENTAR BOTONES PARA LA VISTA 
                 while (dr.Read())

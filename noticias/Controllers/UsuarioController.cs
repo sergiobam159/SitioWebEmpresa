@@ -35,7 +35,7 @@ namespace noticias.Controllers
             if (dr.Read())
             {
 
-                return RedirectToAction("vistaCrud", "Noticia");
+                return RedirectToAction("vistaCrud", "Noticia", new {inicial=0, elementos = 1 });
             }
             else
             {

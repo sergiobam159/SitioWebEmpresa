@@ -1,6 +1,7 @@
 ﻿
 @model  List<noticias.Models.Noticia>
 
+
 @{
     ViewBag.Title = "vistaCrud";
     Layout = "~/Views/_LayoutPage1.cshtml";
@@ -41,5 +42,22 @@
 
     </tbody>
 </table>
+
+<text>@ViewBag.cantidadDePaginas</text>
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+        @for (int i = 0; i < ViewBag.cantidadDePaginas; i++)
+        {
+
+            <li class="page-item"><a class="page-link" href="#">@(i+1)</a></li>
+           
+        }
+        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+        </ul>
+</nav>
+
+
 <br>
 @Html.ActionLink("Cerrar sesion y volver a voticias", "InicioNoticias")

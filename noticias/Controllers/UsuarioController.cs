@@ -53,7 +53,7 @@ namespace noticias.Controllers
                 if (dr.Read())
                 {
 
-                    return RedirectToAction("vistaCrud", "Noticia", new { inicial = 0, elementos = 1 });
+                    return RedirectToAction("vistaCrud", "Noticia", new { inicial = 0, elementos = 5 });
                 }
                 else
                 {

@@ -28,32 +28,38 @@ namespace noticias.Controllers
         }
         #endregion
         #region lISTADO
+        public int obtenerIdUltimaPublicacion()
+        {
+            con = conexion.Instancia.Conectar();
+            con.Open();
+            int idUltimaPublicacion = 0;
+            cmd = new SqlCommand("obtenerIdultimaPublicacion", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            if (reader.Read())
+            {
+                idUltimaPublicacion = Convert.ToInt16(reader["nIdPublicacion"]);
+            }
+            con.Close();
+            return idUltimaPublicacion;
+        }
         public List<Noticia> ListadoNoticia(int inicial, int elementos)
         {
 
             List<Noticia> lista = new List<Noticia>();
             try
             {
-                con = conexion.Instancia.Conectar();
-                con.Open();
-                int idUltimaPublicacion= 0;
-                cmd = new SqlCommand("obtenerIdultimaPublicacion", con);
-                cmd.CommandType = CommandType.StoredProcedure;
-                SqlDataReader reader = cmd.ExecuteReader();
+                
 
-                if (reader.Read())
-                {
-                    idUltimaPublicacion = Convert.ToInt16(reader["nIdPublicacion"]);
-                }
-
-                int paginas = idUltimaPublicacion / 10;
+                int paginas = obtenerIdUltimaPublicacion() / 10;
                 if (paginas < 1) paginas = 1;
 
                 ViewBag.cantidadDePaginas = paginas;
 
 
 
-                con.Close();
+                
 
                 con = conexion.Instancia.Conectar();
                 con.Open();

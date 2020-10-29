@@ -8,7 +8,13 @@ Note: Licence under Creative Commons Attribution 3.0
 @import url("font-awesome.css");
 @import url("animate.css");
 
-p{
+#botonCrear {
+    text-align: center;
+    margin-left: 49%;
+    margin-bottom: 1%;
+}
+
+p {
     text-align: justify;
 }
 #imagenNoticiaSecundaria {
@@ -124,11 +130,28 @@ a:active {
 	margin-bottom: 0;
 }
 
-#tablaNoticias{
-    text-align: center;
-    margin: auto;
+#navegadorLista{
+    
+    text-align:center;
 }
 
+
+#tablaNoticias, th, td {
+    width: 50%;
+    border: 1px solid black;
+    margin: auto;
+    border-collapse: collapse;
+    text-align: center;
+    padding: 15px;
+}
+
+#forminicio {
+    text-align: center;
+}
+
+tr:hover {
+    background-color: #f5f5f5;
+}
 h1,
 h2 {
 	font-weight: 600;
@@ -138,6 +161,7 @@ h2 {
 	font-family: "Montserrat", sans-serif;
 	margin-bottom: 20px;
 	text-transform: uppercase;
+    margin-top: 5%;
 }
 .flex-caption h3 {
 	font-family: "Montserrat", sans-serif;
@@ -986,8 +1010,8 @@ form#commentform textarea {
 
 .about-text .btn {
 	margin-top: 20px;
-	//font-size: 15px;
-	//text-align: justify;
+	/*//font-size: 15px;
+	//text-align: justify;*/
 }
 
 .about-image img {

@@ -7,51 +7,56 @@
     Layout = "~/Views/_LayoutPage1.cshtml";
 }
 
-<h2>vistaCrud</h2>
+<h2 >vistaCrud</h2>
+<button id="botonCrear">
 @Html.ActionLink("Crear", "Crear")
-
-<table id="tablaNoticias" >
-    <thead>
-        <tr>
-            <th> ID</th>
-            <th>Titulo Noticia</th>
-            <th>Fecha Publicado</th>
-            <th>Autor</th>
-            <th>Usuario</th>
-
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+    </button>
+<div style="overflow-x:auto;">
+    <table id="tablaNoticias">
+        <thead>
             <tr>
-                <td>@item.nIdPublicacion</td>
-                <td>@item.cTituloPublicacion</td>
-                <td>@item.dFechaPublicacion</td>
-                <td>@item.idAutor</td>
-                <td>@item.cUsuCodigo</td>
-                <td>
-                    <ul>
-                        <a title="Eliminar" onclick="return confirm('¿Esta seguro?');" href="~/Noticia/EliminarNoticia/@item.nIdPublicacion">X</a>
-                        @Html.ActionLink("Editar", "Editar", new { id = item.nIdPublicacion })
+                <th> ID</th>
+                <th>Titulo Noticia</th>
+                <th>Fecha Publicado</th>
+                <th>Autor</th>
+                <th>Usuario</th>
+                <th>Opciones</th>
 
-                    </ul>
-                </td>
+
             </tr>
-        }
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.nIdPublicacion</td>
+                    <td>@item.cTituloPublicacion</td>
+                    <td>@item.dFechaPublicacion</td>
+                    <td>@item.idAutor</td>
+                    <td>@item.cUsuCodigo</td>
+                    <td>
+                        <ul style="padding-left:0px">
+                            <a title="Eliminar" onclick="return confirm('¿Esta seguro?');" href="~/Noticia/EliminarNoticia/@item.nIdPublicacion">X</a>
+                            @Html.ActionLink("Editar", "Editar", new { id = item.nIdPublicacion })
 
-    </tbody>
-</table>
+                        </ul>
+                    </td>
+                </tr>
+            }
 
-<text>@ViewBag.cantidadDePaginas</text>
+        </tbody>
+    </table>
+</div>
 
-<nav aria-label="Page navigation example">
+
+<nav aria-label="Page navigation example" id="navegadorLista">
     <ul class="pagination">
         <li class="page-item"><a class="page-link" href="#">Previous</a></li>
         @for (int i = 0; i < ViewBag.cantidadDePaginas; i++)
         {
             //AQUI SE TIENE QUE LLAMAR A LA FUNCION VISTACRUD PERO CON LOS VALORES CAMBIADOS PE KAOSA CON EL i
-            <li class="page-item"><a class="page-link" href="#">@(i+1)</a></li>
+            
+    <li class="page-item">  @Html.ActionLink((i+1).ToString(), "vistaCrud", new { inicial =(Model.Last().nIdPublicacion-1) , elementos = 5 })<!--<a class="page-link" href="~/Noticia/vistaCrud/inicial= &elementos= "> </a>--></li>
            
         }
         <li class="page-item"><a class="page-link" href="#">Next</a></li>

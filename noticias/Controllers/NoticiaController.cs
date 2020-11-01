@@ -53,6 +53,7 @@ namespace noticias.Controllers
                 
 
                 int paginas = obtenerIdUltimaPublicacion() / 10;
+                ViewBag.IdUltimaPublicacion = obtenerIdUltimaPublicacion();
                 if (paginas < 1) paginas = 1;
 
                 ViewBag.cantidadDePaginas = paginas;
@@ -259,7 +260,7 @@ namespace noticias.Controllers
                 throw e;
             }
 
-            return RedirectToAction("vistaCrud", "Noticia");
+            return RedirectToAction("vistaCrud", "Noticia", new { inicial = 0, elementos = 5 });
 
         }
         #endregion

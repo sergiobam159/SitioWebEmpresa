@@ -8,6 +8,10 @@ Note: Licence under Creative Commons Attribution 3.0
 @import url("font-awesome.css");
 @import url("animate.css");
 
+footer {
+    bottom: 0%;
+}
+
 #botonCrear {
     text-align: center;
     margin-left: 49%;
@@ -147,6 +151,11 @@ a:active {
 
 #forminicio {
     text-align: center;
+}
+
+#footer {
+    background: #232527;
+    position: relative;
 }
 
 tr:hover {
@@ -1690,6 +1699,7 @@ footer .widget .flickr_badge img {
 footer {
 	padding: 50px 0 0 0;
 	color: #f8f8f8;
+    bottom 0px;
 }
 
 footer a {

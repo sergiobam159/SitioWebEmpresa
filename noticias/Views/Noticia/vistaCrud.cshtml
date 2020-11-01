@@ -55,9 +55,10 @@
         @for (int i = 0; i < ViewBag.cantidadDePaginas; i++)
         {
             //AQUI SE TIENE QUE LLAMAR A LA FUNCION VISTACRUD PERO CON LOS VALORES CAMBIADOS PE KAOSA CON EL i
-            
-    <li class="page-item">  @Html.ActionLink((i+1).ToString(), "vistaCrud", new { inicial =(Model.Last().nIdPublicacion-1) , elementos = 5 })<!--<a class="page-link" href="~/Noticia/vistaCrud/inicial= &elementos= "> </a>--></li>
-           
+        //AQUI EVALUA SI LA ULTIMA PUBLICACION DE LA LISTA MODEL ES LA ULTIMA DE LA BASE DE DATOS
+    <li class="page-item">@if (Model.Last().nIdPublicacion != ViewBag.IdUltimaPublicacion) { @Html.ActionLink((i + 1).ToString(), "vistaCrud", new { inicial = (Model.Last().nIdPublicacion - 1), elementos = 5 }); }
+       <!--<a class="page-link" href="~/Noticia/vistaCrud/inicial= &elementos= "> </a>--></li>
+        
         }
         <li class="page-item"><a class="page-link" href="#">Next</a></li>
         </ul>

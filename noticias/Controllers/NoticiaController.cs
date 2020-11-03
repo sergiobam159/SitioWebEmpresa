@@ -576,9 +576,19 @@ namespace noticias.Controllers
 
         }
 
-       
-        
+
+
 
         #endregion
+
+        #region BuscadorDeNoticias
+        /*public List<Noticia> BuscardorDeNoticias()
+        {
+
+        }
+        */
+
+        #endregion
+
     }
 }

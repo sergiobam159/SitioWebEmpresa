@@ -46,19 +46,37 @@ namespace noticias.Controllers
         }
 
 
+        public int obteneridPrimeraPublicacion()
+        {
+            int idprimera = 0; 
+            con = conexion.Instancia.Conectar();
+            con.Open();
+            
+            cmd = new SqlCommand("obtenerIdPrimeraPublicacion", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            SqlDataReader reader = cmd.ExecuteReader();
 
+            if (reader.Read())
+            {
+                idprimera = Convert.ToInt16(reader["nIdPublicacion"]);
+            }
+            con.Close();
+           
+
+            return idprimera;
+        }
         public List<Noticia> ListadoNoticia(int inicial, int elementos)
         {
 
             List<Noticia> lista = new List<Noticia>();
             try
             {
-
-               
-                int paginas = obtenerIdUltimaPublicacion() / 5;
-                if (paginas < 1) paginas = 1;
-                if (obtenerIdUltimaPublicacion() % 5 > 0) paginas++;
+                
                 ViewBag.IdUltimaPublicacion = obtenerIdUltimaPublicacion();
+                ViewBag.IdPrimeraPublicacion = obteneridPrimeraPublicacion();
+                int paginas = ViewBag.IdUltimaPublicacion / 5;
+                if (paginas < 1) paginas = 1;
+                if ((ViewBag.IdUltimaPublicacion - (ViewBag.IdPrimeraPublicacion-1)) % 5 > 0) paginas++;
                 
 
                 ViewBag.cantidadDePaginas = paginas;

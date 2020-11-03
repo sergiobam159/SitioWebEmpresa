@@ -52,8 +52,8 @@
 <nav aria-label="Page navigation example" id="navegadorLista">
     <ul class="pagination">
         <li class="page-item">
-            
-            @if (Model.Last().nIdPublicacion != 6)
+             
+            @if (ViewBag.IdPrimeraPublicacion!=Model.First().NIdPublicacion)
             {
                 @Html.ActionLink("Atras", "vistaCrud", new { inicial = (Model.Last().nIdPublicacion - 10), elementos = 5 })
             }

@@ -7,7 +7,7 @@
     Layout = "~/Views/_LayoutPage1.cshtml";
 }
 
-<h2 >vistaCrud</h2>
+<h2 >GESTION DE NOTICIAS</h2>
 <button id="botonCrear">
 @Html.ActionLink("Crear", "Crear")
     </button>
@@ -51,16 +51,31 @@
 
 <nav aria-label="Page navigation example" id="navegadorLista">
     <ul class="pagination">
-        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+        <li class="page-item">
+            
+            @if (Model.Last().nIdPublicacion != 6)
+            {
+                @Html.ActionLink("Atras", "vistaCrud", new { inicial = (Model.Last().nIdPublicacion - 10), elementos = 5 })
+            }
+        </li>
         @for (int i = 0; i < ViewBag.cantidadDePaginas; i++)
         {
-            //AQUI SE TIENE QUE LLAMAR A LA FUNCION VISTACRUD PERO CON LOS VALORES CAMBIADOS PE KAOSA CON EL i
-        //AQUI EVALUA SI LA ULTIMA PUBLICACION DE LA LISTA MODEL ES LA ULTIMA DE LA BASE DE DATOS
-    <li class="page-item">@if (Model.Last().nIdPublicacion != ViewBag.IdUltimaPublicacion) { @Html.ActionLink((i + 1).ToString(), "vistaCrud", new { inicial = (Model.Last().nIdPublicacion - 1), elementos = 5 }); }
-       <!--<a class="page-link" href="~/Noticia/vistaCrud/inicial= &elementos= "> </a>--></li>
+            //AQUI SE TIENE QUE LLAMAR A LA FUNCION VISTACRUD PERO CON LOS VALORES CAMBIADOS  CON EL iAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+            //AQUI EVALUA SI LA ULTIMA PUBLICACION DE LA LISTA MODEL ES LA ULTIMA DE LA BASE DE DATOS
+    <li class="page-item">
+        @{
+            @Html.ActionLink((i + 1).ToString(), "vistaCrud", new { inicial = ((5*(i*1))), elementos = 5 })
+        }
+
+        </li>
         
         }
-        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+    <li class="page-item">
+        @if (Model.Last().nIdPublicacion!=ViewBag.IdUltimaPublicacion)
+        {
+            @Html.ActionLink(("Siguiente"), "vistaCrud", new { inicial = (Model.Last().nIdPublicacion - 1), elementos = 5 })
+        }
+    </li>
         </ul>
 </nav>
 

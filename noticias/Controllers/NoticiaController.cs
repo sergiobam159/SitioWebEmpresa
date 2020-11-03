@@ -44,17 +44,22 @@ namespace noticias.Controllers
             con.Close();
             return idUltimaPublicacion;
         }
+
+
+
         public List<Noticia> ListadoNoticia(int inicial, int elementos)
         {
 
             List<Noticia> lista = new List<Noticia>();
             try
             {
-                
 
-                int paginas = obtenerIdUltimaPublicacion() / 10;
-                ViewBag.IdUltimaPublicacion = obtenerIdUltimaPublicacion();
+               
+                int paginas = obtenerIdUltimaPublicacion() / 5;
                 if (paginas < 1) paginas = 1;
+                if (obtenerIdUltimaPublicacion() % 5 > 0) paginas++;
+                ViewBag.IdUltimaPublicacion = obtenerIdUltimaPublicacion();
+                
 
                 ViewBag.cantidadDePaginas = paginas;
 
@@ -123,7 +128,7 @@ namespace noticias.Controllers
 
 
             }
-            return RedirectToAction("vistaCrud", "Noticia");
+            return RedirectToAction("vistaCrud", "Noticia", new { inicial = 0, elementos = 5 });
         }
         #endregion
         #region Crear

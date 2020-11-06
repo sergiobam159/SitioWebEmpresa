@@ -121,6 +121,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ManualController.cs" />
     <Compile Include="Controllers\NoticiaController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Global.asax.cs">
@@ -128,6 +129,7 @@
     </Compile>
     <Compile Include="Models\conexion.cs" />
     <Compile Include="Models\Imagen.cs" />
+    <Compile Include="Models\Manual.cs" />
     <Compile Include="Models\Noticia.cs" />
     <Compile Include="Models\Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -208,6 +210,7 @@
     <Content Include="Views\Noticia\Editar.cshtml" />
     <Content Include="Views\Noticia\InicioNoticias.cshtml" />
     <Content Include="Views\Noticia\VerNoticiaSeleccionada.cshtml" />
+    <Content Include="Views\Manual\ControlesCrud.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

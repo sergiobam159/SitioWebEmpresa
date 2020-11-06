@@ -4,12 +4,12 @@
     Layout = "~/Views/_LayoutPage1.cshtml";
 }
 
-<div class="padding-all">
-    <div class="header">
-        <h1>GESTIONAR NOTICIAS</h1>
-    </div>
+    <div class="padding-all">
+        <div class="header">
+            <h1>GESTIONAR NOTICIAS</h1>
+        </div>
 
-    
+
         <div id="forminicio" style="text-align:center; margin-top:10%">
             <form action="Verificar" method="post">
                 <input type="text" name="cNombreUsuario" placeholder="usuario" required="" />
@@ -18,10 +18,11 @@
             </form>
         </div>
         <div class="clear"> </div>
-   
+
+        
 
 
-</div>
+    </div>
 @Html.ActionLink("Volver a Noticias","InicioNoticias", "Noticia")
 <footer style="bottom: 0px; position:absolute; width:100%">
 <div id="subfooter" style="text-align:center">

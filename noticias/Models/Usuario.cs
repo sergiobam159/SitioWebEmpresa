@@ -9,5 +9,6 @@ namespace noticias.Models
     {
         public string   cNombreUsuario { get; set; }
         public string cClaveUsuario { get; set; }
+        public Boolean Activo { get; set; }
     }
 }

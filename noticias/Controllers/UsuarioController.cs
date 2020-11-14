@@ -37,10 +37,16 @@ namespace noticias.Controllers
         }
 
         [HttpPost]
-        public ActionResult Verificar(Usuario acc)
+        public ActionResult Verificar(Usuario acc, FormCollection frm)
         {
+            Usuario user = new Usuario();
+
+            string seleccionRadioButton = frm["seleccion"].ToString();
+
+
             bool validarNombre = verificarTexto(acc.cNombreUsuario);
             bool validarContraseña = verificarTexto(acc.cClaveUsuario);
+            string manual = Request.Form["manuales"];
 
             if (validarNombre && validarContraseña)
             {
@@ -52,8 +58,30 @@ namespace noticias.Controllers
 
                 if (dr.Read())
                 {
+                    user.cNombreUsuario = Convert.ToString(dr["cNombreUsuario"]);
+                    user.cClaveUsuario = Convert.ToString(dr["cClaveUsuario"]);
+                    user.Activo = Convert.ToBoolean(dr["bActivo"]);
 
-                    return RedirectToAction("vistaCrud", "Noticia", new { inicial = 0, elementos = 5 });
+                    Session["usuario"] = user.cNombreUsuario;
+                    Session["contraseña"] = user.cClaveUsuario;
+                    Session["activo"] = user.Activo;
+
+                    if (user.Activo == true)
+                    {
+                        if (seleccionRadioButton == "Noticias")
+                        {
+                            return RedirectToAction("vistaCrud", "Noticia", new { inicial = 0, elementos = 5 });
+                        }
+                        else
+                        {
+                            return RedirectToAction("manualCrud", "Manual");
+                        }
+                    }
+                    else {
+                        con.Close();
+                        return View("Error");
+
+                    }
                 }
                 else
                 {

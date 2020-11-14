@@ -210,7 +210,7 @@
     <Content Include="Views\Noticia\Editar.cshtml" />
     <Content Include="Views\Noticia\InicioNoticias.cshtml" />
     <Content Include="Views\Noticia\VerNoticiaSeleccionada.cshtml" />
-    <Content Include="Views\Manual\ControlesCrud.cshtml" />
+    <Content Include="Views\Manual\manualCrud.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

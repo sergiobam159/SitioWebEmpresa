@@ -7,23 +7,28 @@
     <div class="padding-all">
         <div class="header">
             <h1>GESTIONAR NOTICIAS</h1>
-        </div>
+           
+            <div id="forminicio" style="text-align:center; margin-top:10%">
+                
+                
+                <form action="Verificar" method="post">
 
+                    
+                    Noticias @Html.RadioButton("seleccion", "Noticias")
+                    Manuales @Html.RadioButton("seleccion", "Manuales")
 
-        <div id="forminicio" style="text-align:center; margin-top:10%">
-            <form action="Verificar" method="post">
-                <input type="text" name="cNombreUsuario" placeholder="usuario" required="" />
-                <input type="password" name="cClaveUsuario" class="padding" placeholder="contraseña" required="" />
-                <input type="submit" value="ingresar">
-            </form>
-        </div>
+                    <input type="text" name="cNombreUsuario" placeholder="usuario" required="" />
+                    <input type="password" name="cClaveUsuario" class="padding" placeholder="contraseña" required="" />
+                    <input type="submit" value="ingresar">
+                </form>
+            </div>
         <div class="clear"> </div>
 
-        
+
 
 
     </div>
-@Html.ActionLink("Volver a Noticias","InicioNoticias", "Noticia")
+@Html.ActionLink("Volver a Noticias", "InicioNoticias", "Noticia")
 <footer style="bottom: 0px; position:absolute; width:100%">
 <div id="subfooter" style="text-align:center">
     <div class="container">

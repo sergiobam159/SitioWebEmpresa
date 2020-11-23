@@ -1,3 +1,6 @@
+
+
+
 function mandarMail() {
 	let nombre = document.getElementById("name").value;
 	let mensaje = document.getElementById("message").value;

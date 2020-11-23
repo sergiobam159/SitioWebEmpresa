@@ -74,7 +74,7 @@ namespace noticias.Controllers
                         }
                         else
                         {
-                            return RedirectToAction("manualCrud", "Manual");
+                            return RedirectToAction("ListarManuales", "Manual");
                         }
                     }
                     else {

@@ -14,7 +14,7 @@ namespace noticias.Controllers
     
     public class NoticiaController : Controller
     {
-        #region conexion
+        #region Inicial
 
         SqlConnection con = new SqlConnection();
         SqlCommand cmd = new SqlCommand();
@@ -153,7 +153,6 @@ namespace noticias.Controllers
         [HttpGet]
         public ActionResult Crear()
         {
-
 
             return View(new Noticia());
 

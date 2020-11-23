@@ -19,6 +19,7 @@ namespace noticias.Models
         public string version;
         public DateTime dFechaRegistro;
         public string ruta;
+        public List<Manual> hijos;
 
         public int NIdManual { get => nIdManual; set => nIdManual = value; }
         public string CNombreManual { get => cNombreManual; set => cNombreManual = value; }
@@ -31,5 +32,6 @@ namespace noticias.Models
         public string Version { get => version; set => version = value; }
         public DateTime DFechaRegistro { get => dFechaRegistro; set => dFechaRegistro = value; }
         public string Ruta { get => ruta; set => ruta = value; }
+        public List<Manual> Hijos { get => hijos; set => hijos = value; }
     }
 }

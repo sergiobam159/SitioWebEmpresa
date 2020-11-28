@@ -88,7 +88,7 @@ namespace noticias.Controllers
         #endregion
 
         #region #crearManuales
-        public ActionResult CrearManual (Manual manual)
+        public ActionResult CrearManualHijo (Manual manual)
         {
             con = conexion.Instancia.Conectar();
             con.Open();
@@ -99,7 +99,24 @@ namespace noticias.Controllers
             return RedirectToAction("ListarManuales", "Manual");
         }
 
-        
+        [HttpGet]
+        public ActionResult CrearPadre()
+        {
+
+            return View(new Manual());
+
+        }
+        [HttpPost]
+        public ActionResult CrearPadre(Manual manual)
+        {
+            con = conexion.Instancia.Conectar();
+            con.Open();
+            cmd = new SqlCommand("crearManual");
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            //INSERTAR CREAR
+            return RedirectToAction("ListarManuales", "Manual");
+        }
         #endregion
     }
 }

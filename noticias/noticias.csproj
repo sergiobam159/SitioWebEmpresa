@@ -211,6 +211,7 @@
     <Content Include="Views\Noticia\InicioNoticias.cshtml" />
     <Content Include="Views\Noticia\VerNoticiaSeleccionada.cshtml" />
     <Content Include="Views\Manual\ListarManuales.cshtml" />
+    <Content Include="Views\Manual\CrearPadre.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

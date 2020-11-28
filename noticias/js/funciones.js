@@ -1,3 +1,18 @@
+function mostrar(x) {
+
+
+    var x = document.getElementsByClassName(x);
+    var i
+    var j = document.getElementsByClassName(x).length;
+    console.log(x,j);
+    for (i = 0; i < x.length; i++) {
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+}
 
 
 

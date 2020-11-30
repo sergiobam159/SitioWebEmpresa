@@ -61,11 +61,12 @@ namespace noticias.Controllers
                     user.cNombreUsuario = Convert.ToString(dr["cNombreUsuario"]);
                     user.cClaveUsuario = Convert.ToString(dr["cClaveUsuario"]);
                     user.Activo = Convert.ToBoolean(dr["bActivo"]);
+                    user.cUsuCodigo = Convert.ToInt16(dr["cUsuCodigo"]);
 
                     Session["usuario"] = user.cNombreUsuario;
                     Session["contraseña"] = user.cClaveUsuario;
                     Session["activo"] = user.Activo;
-
+                    Session["CodigoUsuario"] = user.cUsuCodigo;
                     if (user.Activo == true)
                     {
                         if (seleccionRadioButton == "Noticias")

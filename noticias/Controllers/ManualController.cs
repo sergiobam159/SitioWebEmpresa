@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 using System.Data.SqlClient;
 using noticias.Models;
+using System.Data;
+
 
 
 namespace noticias.Controllers
@@ -109,13 +111,35 @@ namespace noticias.Controllers
         [HttpPost]
         public ActionResult CrearPadre(Manual manual)
         {
-            con = conexion.Instancia.Conectar();
-            con.Open();
-            cmd = new SqlCommand("crearManual");
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
-
-            //INSERTAR CREAR
-            return RedirectToAction("ListarManuales", "Manual");
+            try
+            {
+                manual.CTipoDocumento = "PDF";
+                manual.cUsuCodigo = (int)Session["CodigoUsuario"];
+                manual.version = "1.0";
+                manual.ruta = "RutaPorDefault-NoDisponible";
+                con = conexion.Instancia.Conectar();
+                con.Open();
+                cmd = new SqlCommand("CrearNuevoManualPadre",con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@cNombreManual", SqlDbType.VarChar).Value = manual.CNombreManual;
+                cmd.Parameters.Add("@cDescripcion", SqlDbType.VarChar).Value = manual.cDescripcion;
+                cmd.Parameters.Add("@bEstado", SqlDbType.Bit).Value = true;
+                //NO TIENE PADRE 
+                cmd.Parameters.AddWithValue("@cPadre", DBNull.Value);
+                // SE AUTOASIGNA JERARQUIA EN SQL
+                cmd.Parameters.Add("@cTipoDocumento", SqlDbType.VarChar).Value = manual.CTipoDocumento;
+                cmd.Parameters.Add("@cUsuCodigo", SqlDbType.Int).Value = manual.cUsuCodigo;
+                cmd.Parameters.Add("@version", SqlDbType.VarChar).Value = manual.version;
+                cmd.Parameters.Add("@dFechaRegistro", SqlDbType.DateTime).Value = DateTime.Today;
+                cmd.Parameters.Add("@ruta", SqlDbType.VarChar).Value = manual.ruta;
+                cmd.ExecuteNonQuery();
+                con.Close();
+                //INSERTAR CREAR
+            }catch(Exception e)
+            {
+                throw e;
+            }
+                return RedirectToAction("ListarManuales", "Manual");
         }
         #endregion
     }

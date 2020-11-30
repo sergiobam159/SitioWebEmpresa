@@ -90,16 +90,7 @@ namespace noticias.Controllers
         #endregion
 
         #region #crearManuales
-        public ActionResult CrearManualHijo (Manual manual)
-        {
-            con = conexion.Instancia.Conectar();
-            con.Open();
-            cmd = new SqlCommand("crearManual");
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
-
-            //INSERTAR CREAR
-            return RedirectToAction("ListarManuales", "Manual");
-        }
+       
 
         [HttpGet]
         public ActionResult CrearPadre()
@@ -108,6 +99,7 @@ namespace noticias.Controllers
             return View(new Manual());
 
         }
+
         [HttpPost]
         public ActionResult CrearPadre(Manual manual)
         {
@@ -119,7 +111,7 @@ namespace noticias.Controllers
                 manual.ruta = "RutaPorDefault-NoDisponible";
                 con = conexion.Instancia.Conectar();
                 con.Open();
-                cmd = new SqlCommand("CrearNuevoManualPadre",con);
+                cmd = new SqlCommand("CrearNuevoManualPadre", con);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add("@cNombreManual", SqlDbType.VarChar).Value = manual.CNombreManual;
                 cmd.Parameters.Add("@cDescripcion", SqlDbType.VarChar).Value = manual.cDescripcion;
@@ -134,13 +126,66 @@ namespace noticias.Controllers
                 cmd.Parameters.Add("@ruta", SqlDbType.VarChar).Value = manual.ruta;
                 cmd.ExecuteNonQuery();
                 con.Close();
-                //INSERTAR CREAR
-            }catch(Exception e)
+               
+            }
+            catch (Exception e)
             {
                 throw e;
             }
-                return RedirectToAction("ListarManuales", "Manual");
+            return RedirectToAction("ListarManuales", "Manual");
         }
+
+        [HttpGet]
+        public ActionResult CrearHijo(string  jerarquiaPadre)
+        {
+          
+
+            return View(new Manual());
+            
+        }
+
+        [HttpPost]
+        public ActionResult CrearHijo(string jerarquiaPadre, Manual manual)
+        {
+             
+            manual.CTipoDocumento = "PDF";
+            manual.cUsuCodigo = (int)Session["CodigoUsuario"];
+            manual.version = "1.0";
+            manual.ruta = "RutaPorDefault-NoDisponible";
+            manual.CPadre = jerarquiaPadre;
+
+            try
+            {
+                con = conexion.Instancia.Conectar();
+                con.Open();
+                cmd = new SqlCommand("CrearManualHijo", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+               
+                cmd.Parameters.Add("@cNombreManual", SqlDbType.VarChar).Value = manual.CNombreManual;
+                cmd.Parameters.Add("@cDescripcion", SqlDbType.VarChar).Value = manual.cDescripcion;
+                cmd.Parameters.Add("@bEstado", SqlDbType.Bit).Value = true;
+                //NO TIENE PADRE 
+                cmd.Parameters.AddWithValue("@cPadre", SqlDbType.VarChar).Value = manual.CPadre;
+                // SE AUTOASIGNA JERARQUIA EN SQL
+                cmd.Parameters.Add("@cTipoDocumento", SqlDbType.VarChar).Value = manual.CTipoDocumento;
+                cmd.Parameters.Add("@cUsuCodigo", SqlDbType.Int).Value = manual.cUsuCodigo;
+                cmd.Parameters.Add("@version", SqlDbType.VarChar).Value = manual.version;
+                cmd.Parameters.Add("@dFechaRegistro", SqlDbType.DateTime).Value = DateTime.Today;
+                cmd.Parameters.Add("@ruta", SqlDbType.VarChar).Value = manual.ruta;
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            return RedirectToAction("ListarManuales", "Manual");
+
+        }
+
+
+
+
         #endregion
     }
 }

@@ -212,6 +212,7 @@
     <Content Include="Views\Noticia\VerNoticiaSeleccionada.cshtml" />
     <Content Include="Views\Manual\ListarManuales.cshtml" />
     <Content Include="Views\Manual\CrearPadre.cshtml" />
+    <Content Include="Views\Manual\CrearHijo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

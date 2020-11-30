@@ -46,54 +46,59 @@
         <th>
             @Html.DisplayNameFor(model => model.Ruta)
         </th>
-        <th></th>
+        
     </tr>
     @{var x = 212;
 
         foreach (var item in Model)
         {
-            <tr  id="@(item.CJerarquia)"class="@(item.CJerarquia)" onclick="mostrar(this.id)" style="display: table-row;">
-                <td>
-                    @Html.DisplayFor(manualesItem => item.NIdManual)
-                </td>
-                <td>
-                    @Html.DisplayFor(manualesItem => item.CNombreManual)
-                </td>
-                <td>
-                    @Html.DisplayFor(manualesItem => item.CDescripcion)
-                </td>
-                <td>
-                    @Html.DisplayFor(manualesItem => item.BEstado)
-                </td>
-                <td>
-                    @Html.DisplayFor(manualesItem => item.CPadre)
-                </td>
-                <td>
-                    @Html.DisplayFor(manualesItem => item.CJerarquia)
-                </td>
-                <td>
-                    @Html.DisplayFor(manualesItem => item.CTipoDocumento)
-                </td>
-                <td>
-                    @Html.DisplayFor(manualesItem => item.CUsuCodigo)
-                </td>
-                <td>
-                    @Html.DisplayFor(manualesItem => item.Version)
-                </td>
-                <td>
-                    @Html.DisplayFor(manualesItem => item.DFechaRegistro)
-                </td>
-                <td>
-                    @Html.DisplayFor(manualesItem => item.Ruta)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-                </td>
+        <tr id="@(item.CJerarquia)" class="@(item.CJerarquia)" onclick="mostrar(this.id)" style="display: table-row;">
+            <td>
+                @Html.DisplayFor(manualesItem => item.NIdManual)
+            </td>
+            <td>
+                @Html.DisplayFor(manualesItem => item.CNombreManual)
+            </td>
+            <td>
+                @Html.DisplayFor(manualesItem => item.CDescripcion)
+            </td>
+            <td>
+                @Html.DisplayFor(manualesItem => item.BEstado)
+            </td>
+            <td>
+                @Html.DisplayFor(manualesItem => item.CPadre)
+            </td>
+            <td>
+                @Html.DisplayFor(manualesItem => item.CJerarquia)
+            </td>
+            <td>
+                @Html.DisplayFor(manualesItem => item.CTipoDocumento)
+            </td>
+            <td>
+                @Html.DisplayFor(manualesItem => item.CUsuCodigo)
+            </td>
+            <td>
+                @Html.DisplayFor(manualesItem => item.Version)
+            </td>
+            <td>
+                @Html.DisplayFor(manualesItem => item.DFechaRegistro)
+            </td>
+            <td>
+                @Html.DisplayFor(manualesItem => item.Ruta)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ })
+            </td>
+            <td>
+                @Html.ActionLink("Nuevo Hijo", "CrearHijo", new { jerarquiaPadre = item.CJerarquia }) 
+            </td>
 
-                @MostrarHijos(item.hijos)
-            </tr>
+            <td>
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+
+            @MostrarHijos(item.hijos)
+        </tr>
         }
     }
 
@@ -145,8 +150,12 @@ foreach (var item in manuales)
                         @Html.DisplayFor(manualesItem => item.Ruta)
                     </td>
                     <td>
-                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) 
+                      </td>
+                        <td>
+                        @Html.ActionLink("Nuevo Hijo", "CrearHijo", new { jerarquiaPadre = item.CJerarquia }) 
+                            </td>                    
+                    <td>    
                         @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
                     </td>
 

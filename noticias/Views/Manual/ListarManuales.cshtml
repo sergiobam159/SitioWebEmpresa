@@ -8,14 +8,24 @@
 <h2>Manuales</h2>
 
 <p>
-    @Html.ActionLink("Crear Nuevo Padre", "CrearPadre","Manual")
+    @Html.ActionLink("Crear Nuevo Padre", "CrearPadre", "Manual")
 </p>
+<!--
+<style>
+    table {
+font-size:smaller;
+        table-layout: auto;
+    }
 
-<table class="table" style="width:70%; margin:auto; color:rgb(51, 51,51);" >
+    td {
+        width: 1px;
+        white-space: nowrap;
+    }
+</style>
+    -->
+<table class="table" style="width:80%; margin:auto; color:rgb(51, 51,51);">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.NIdManual)
-        </th>
+
         <th>
             @Html.DisplayNameFor(model => model.CNombreManual)
         </th>
@@ -46,153 +56,173 @@
         <th>
             @Html.DisplayNameFor(model => model.Ruta)
         </th>
-        
+
     </tr>
-    @{var x = 212;
+    @{var x = 50;
 
         foreach (var item in Model)
         {
-        <tr id="@(item.CJerarquia)" class="@(item.CJerarquia)" onclick="mostrar(this.id)" style="display: table-row;">
-            <td>
-                @Html.DisplayFor(manualesItem => item.NIdManual)
-            </td>
-            <td>
-                @Html.DisplayFor(manualesItem => item.CNombreManual)
-            </td>
-            <td>
-                @Html.DisplayFor(manualesItem => item.CDescripcion)
-            </td>
-            <td>
-                @Html.DisplayFor(manualesItem => item.BEstado)
-            </td>
-            <td>
-                @Html.DisplayFor(manualesItem => item.CPadre)
-            </td>
-            <td>
-                @Html.DisplayFor(manualesItem => item.CJerarquia)
-            </td>
-            <td>
-                @Html.DisplayFor(manualesItem => item.CTipoDocumento)
-            </td>
-            <td>
-                @Html.DisplayFor(manualesItem => item.CUsuCodigo)
-            </td>
-            <td>
-                @Html.DisplayFor(manualesItem => item.Version)
-            </td>
-            <td>
-                @Html.DisplayFor(manualesItem => item.DFechaRegistro)
-            </td>
-            <td>
-                @Html.DisplayFor(manualesItem => item.Ruta)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ })
-            </td>
-            <td>
-                @Html.ActionLink("Nuevo Hijo", "CrearHijo", new { jerarquiaPadre = item.CJerarquia }) 
-            </td>
+            <tr id="@(item.CJerarquia)" class="@(item.CJerarquia)" onclick="mostrar(this.id)" style="background-color: rgb(@(x * 2),@(x * 4),@(x * 4));display: table-row;">
 
-            <td>
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
+                <td>
+                    @Html.DisplayFor(manualesItem => item.CNombreManual)
+                </td>
+                <td>
+                    @Html.DisplayFor(manualesItem => item.CDescripcion)
+                </td>
+                <td>
+                    @Html.DisplayFor(manualesItem => item.BEstado)
+                </td>
+                <td>
+                    @Html.DisplayFor(manualesItem => item.CPadre)
+                </td>
+                <td>
+                    @Html.DisplayFor(manualesItem => item.CJerarquia)
+                </td>
+                <td>
+                    @Html.DisplayFor(manualesItem => item.CTipoDocumento)
+                </td>
+                <td>
+                    @Html.DisplayFor(manualesItem => item.CUsuCodigo)
+                </td>
+                <td>
+                    @Html.DisplayFor(manualesItem => item.Version)
+                </td>
+                <td>
+                    @Html.DisplayFor(manualesItem => item.DFechaRegistro)
+                </td>
+                <td>
+                    @Html.DisplayFor(manualesItem => item.Ruta)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ })
+                </td>
+                <td>
+                    <text>hijos: @item.hijos.Count </text>
+                    @Html.ActionLink("Nuevo Hijo", "CrearHijo", new { jerarquiaPadre = item.CJerarquia })
+                </td>
 
-            @MostrarHijos(item.hijos)
-        </tr>
+                <td>
+
+
+                    @{ if (item.hijos.Count == 0)
+                        {
+                            <a title="Borrar" onclick="return confirm('¿Esta seguro?');" href="~/Manual/BorrarManual/@item.nIdManual">Borrar</a>
+                           
+                        }
+                        else
+                        {
+                            <a onclick="return alert('No se puede borrar un manual con manuales hijos Elimine primero los siguientes hijos:');">Borrar</a>
+                        }
+
+                    }
+                </td>
+
+                @MostrarHijos(item.hijos)
+            </tr>
         }
     }
 
     @helper MostrarHijos(IEnumerable<noticias.Models.Manual> manuales)
     {
 
-foreach (var item in manuales)
-{
+        foreach (var item in manuales)
+        {
 
 
-                <tr  id="@(item.CJerarquia)"class="@(item.CJerarquia)" onclick="mostrar(this.id)" style="padding-left:50px; display: none;" >
-                    @{
-                        for (int i = 0; i < (item.cJerarquia.Length / 2); i++) 
-                        {
-                            <td style="border:none"></td>
-                        }
-                    }
-                    <td>
-                        @Html.DisplayFor(manualesItem => item.NIdManual)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(manualesItem => item.CNombreManual)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(manualesItem => item.CDescripcion)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(manualesItem => item.BEstado)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(manualesItem => item.CPadre)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(manualesItem => item.CJerarquia)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(manualesItem => item.CTipoDocumento)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(manualesItem => item.CUsuCodigo)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(manualesItem => item.Version)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(manualesItem => item.DFechaRegistro)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(manualesItem => item.Ruta)
-                    </td>
-                    <td>
-                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) 
-                      </td>
-                        <td>
-                        @Html.ActionLink("Nuevo Hijo", "CrearHijo", new { jerarquiaPadre = item.CJerarquia }) 
-                            </td>                    
-                    <td>    
-                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-                    </td>
-
-                    @if (item.hijos.Count > 0)
+            <tr id="@(item.CJerarquia)" class="@(item.cJerarquia)" onclick="mostrar(this.id)" style="padding-left:50px; display: none;">
+                @{
+                    for (int i = 0; i < (item.cJerarquia.Length / 2); i++)
                     {
-                        @MostrarHijos(item.hijos)
+                        <td style="border:none"></td>
                     }
+                }
 
-                </tr>
+                <td>
+                    @Html.DisplayFor(manualesItem => item.CNombreManual)
+                </td>
+                <td>
+                    @Html.DisplayFor(manualesItem => item.CDescripcion)
+                </td>
+                <td>
+                    @Html.DisplayFor(manualesItem => item.BEstado)
+                </td>
+                <td>
+                    @Html.DisplayFor(manualesItem => item.CPadre)
+                </td>
+                <td>
+                    @Html.DisplayFor(manualesItem => item.CJerarquia)
+                </td>
+                <td>
+                    @Html.DisplayFor(manualesItem => item.CTipoDocumento)
+                </td>
+                <td>
+                    @Html.DisplayFor(manualesItem => item.CUsuCodigo)
+                </td>
+                <td>
+                    @Html.DisplayFor(manualesItem => item.Version)
+                </td>
+                <td>
+                    @Html.DisplayFor(manualesItem => item.DFechaRegistro)
+                </td>
+                <td>
+                    @Html.DisplayFor(manualesItem => item.Ruta)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ })
+                </td>
+                <td>
+                    <text>hijos: @item.hijos.Count </text>
+                    @Html.ActionLink("Nuevo Hijo", "CrearHijo", new { jerarquiaPadre = item.CJerarquia })
+                </td>
+                <td>
 
-            }
+                    @{ if (item.hijos.Count == 0)
+                        {
+                            @Html.ActionLink("Borrar", "BorrarManual", new { id = item.nIdManual });
+                        }
+                        else
+                        {
+                            <a onclick="return alert('No se puede borrar un manual con manuales hijos Elimine primero los siguientes hijos:');">Borrar</a>
+                        }
 
+                    }
+                </td>
 
+                @if (item.hijos.Count > 0)
+                {
+                    @MostrarHijos(item.hijos)
+                }
+
+            </tr>
 
         }
+
+
+
+    }
 
 </table>
 <script>
-    
+
     function mostrar(x) {
-            // X = valor DE JERARQUIA
-            //recive el valor de la jerarquia
-            var id = document.getElementById(x);
-            //busca a todos los valores que comiencen por la jerarquia de la rama seleccionada
-            var clase = document.querySelectorAll('tr[class^="' + id.className + '"]');
-            
-            
-            console.log(x,clase);
+        // X = valor DE JERARQUIA
+        //recive el valor de la jerarquia
+        var nodoActual = document.getElementById(x);
+        //busca a todos los valores que comiencen por la jerarquia de la rama seleccionada
+        var nodosHijos = document.querySelectorAll('tr[class^="' + nodoActual.id+ '"]');
+
+
+        console.log(x, nodosHijos);
         //recorre toda la rama pero evita la primera seleccion, la cual siempre sera el valor de la tabla que se hizo click
-        for (i = 1; i < clase.length; i++) {
-                if (clase[i].style.display === "none") {
-                    clase[i].style.display = "table-row";
-                } else {
-                    clase[i].style.display = "none";
-                }
+        for (i = 1; i < nodosHijos.length; i++) {
+            if (nodosHijos[i].style.display === "none" && nodosHijos[i].id.length == (x.length+2)) {
+                nodosHijos[i].style.display = "table-row";
+            } else {
+                nodosHijos[i].style.display = "none";
             }
         }
+    }
 
 </script>
 

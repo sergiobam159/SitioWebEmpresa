@@ -42,6 +42,8 @@ namespace noticias.Controllers
             }
         }
 
+       
+
         #region listarManuales
 
         public ActionResult ListarManuales()
@@ -90,7 +92,10 @@ namespace noticias.Controllers
         #endregion
 
         #region #crearManuales
-       
+        public void subirArchivo(HttpPostedFileBase archivoManual)
+        {
+
+        }
 
         [HttpGet]
         public ActionResult CrearPadre()
@@ -184,6 +189,35 @@ namespace noticias.Controllers
         }
 
 
+
+
+        #endregion
+
+        #region BorrarManuales
+        
+        public ActionResult BorrarManual(int id)
+        {
+           
+
+                try
+                {
+                    con = conexion.Instancia.Conectar();
+                    con.Open();
+                    cmd = new SqlCommand("BorrarManual", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add("@nIdManual", SqlDbType.Int).Value = id;
+                    cmd.ExecuteNonQuery();
+
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+
+
+            
+            return RedirectToAction("ListarManuales", "Manual");
+        }
 
 
         #endregion

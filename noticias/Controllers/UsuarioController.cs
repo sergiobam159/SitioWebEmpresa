@@ -46,7 +46,7 @@ namespace noticias.Controllers
 
             bool validarNombre = verificarTexto(acc.cNombreUsuario);
             bool validarContraseña = verificarTexto(acc.cClaveUsuario);
-            string manual = Request.Form["manuales"];
+           // string manual = Request.Form["manuales"];
 
             if (validarNombre && validarContraseña)
             {

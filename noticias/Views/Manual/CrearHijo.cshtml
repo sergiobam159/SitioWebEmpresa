@@ -7,7 +7,7 @@
 
 <h2>Nuevo Manual Hijo</h2>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("CrearHijo", "Manual", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
@@ -28,21 +28,72 @@
         <div class="form-group">
             @Html.LabelFor(model => model.CDescripcion, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.CDescripcion, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.CDescripcion, new { htmlAttributes = new { @class = "form-control", @id = "prueba" } })
                 @Html.ValidationMessageFor(model => model.CDescripcion, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
-            <input type="file" name="archivo" id="archivo" />
+
+            <div class="col-md-10">
+                @Html.RadioButtonFor(model => model.cTipoDocumento, "PDF", new { @checked = true })
+            </div>
         </div>
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.RadioButtonFor(model => model.cTipoDocumento, "VIDEO", new { @checked = false })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ruta, htmlAttributes: new { @class = "control-label col-md-2", @id="lblRuta" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ruta, new { htmlAttributes = new { @class = "form-control", @id = "cruta" } })
+                @Html.ValidationMessageFor(model => model.ruta, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.archivo, htmlAttributes: new { @class = "control-label col-md-2", @id="lblfile" })
+            <div class="col-md-10">
+                <input type="file" name="archivo" id="archivo" />
+            </div>
+        </div>
+
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Create" class="btn btn-default" style="margin-inline:40%" />
             </div>
         </div>
+
+
+        <script>
+            $(function () {
+                fn_valida_radio();
+                $("input[type='radio'][name='cTipoDocumento']").on('change', function () {
+                    fn_valida_radio();
+                });
+            });
+
+            function fn_valida_radio() {
+                if ($("input[type='radio'][name='cTipoDocumento']:checked").val() == "PDF") {
+                    $("#lblRuta, #cruta").css({ "display": "none" });
+                    $("#lblfile, #archivo").css({ "display": "" });
+                } else {
+                    $("#lblfile, #archivo").css({ "display": "none" });
+                    $("#lblRuta, #cruta").css({ "display": "" });
+                }
+            }
+        </script>
+
+
+
     </div>
 }
 
 <div style="margin-left:30%">
     @Html.ActionLink("Cancelar", "ListarManuales")
 </div>
+
+<script>
+
+</script>

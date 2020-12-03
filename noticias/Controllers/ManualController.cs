@@ -140,6 +140,9 @@ namespace noticias.Controllers
             return RedirectToAction("ListarManuales", "Manual");
         }
 
+
+
+
         [HttpGet]
         public ActionResult CrearHijo(string  jerarquiaPadre)
         {
@@ -152,38 +155,93 @@ namespace noticias.Controllers
         [HttpPost]
         public ActionResult CrearHijo(string jerarquiaPadre, Manual manual)
         {
-             
-            manual.CTipoDocumento = "PDF";
-            manual.cUsuCodigo = (int)Session["CodigoUsuario"];
-            manual.version = "1.0";
-            manual.ruta = "RutaPorDefault-NoDisponible";
-            manual.CPadre = jerarquiaPadre;
+            var bandera = false;
 
-            try
+            if (manual.cTipoDocumento == "PDF")
             {
-                con = conexion.Instancia.Conectar();
-                con.Open();
-                cmd = new SqlCommand("CrearManualHijo", con);
-                cmd.CommandType = CommandType.StoredProcedure;
-               
-                cmd.Parameters.Add("@cNombreManual", SqlDbType.VarChar).Value = manual.CNombreManual;
-                cmd.Parameters.Add("@cDescripcion", SqlDbType.VarChar).Value = manual.cDescripcion;
-                cmd.Parameters.Add("@bEstado", SqlDbType.Bit).Value = true;
-                //NO TIENE PADRE 
-                cmd.Parameters.AddWithValue("@cPadre", SqlDbType.VarChar).Value = manual.CPadre;
-                // SE AUTOASIGNA JERARQUIA EN SQL
-                cmd.Parameters.Add("@cTipoDocumento", SqlDbType.VarChar).Value = manual.CTipoDocumento;
-                cmd.Parameters.Add("@cUsuCodigo", SqlDbType.Int).Value = manual.cUsuCodigo;
-                cmd.Parameters.Add("@version", SqlDbType.VarChar).Value = manual.version;
-                cmd.Parameters.Add("@dFechaRegistro", SqlDbType.DateTime).Value = DateTime.Today;
-                cmd.Parameters.Add("@ruta", SqlDbType.VarChar).Value = manual.ruta;
-                cmd.ExecuteNonQuery();
-                con.Close();
+                if (manual.archivo != null)
+                {
+                    string fileExtension = System.IO.Path.GetExtension(manual.archivo.FileName).ToUpper();
+                    if (fileExtension == ".PDF")
+                    {
+                        DataTable dtResponse = fn_Get_SysFileConfiguracion_cPerJurCodigo_nSysModulo(99);
+                        var rutafisica = (from c in dtResponse.AsEnumerable()
+                                          where c.Field<string>("cSysFileKey") == "LogFileContrato"
+                                          select new
+                                          {
+                                              cSysFileValue = c.Field<String>("cSysFileValue")
+                                          }).Select(c => c.cSysFileValue).SingleOrDefault();
+                        //var rutavirtual = (from c in dtResponse.AsEnumerable()
+                        //                  where c.Field<string>("cSysFileKey") == "EvPathFileContrato"
+                        //                   select new
+                        //                  {
+                        //                      cSysFileValue = c.Field<String>("cSysFileValue")
+                        //                  }).Select(c => c.cSysFileValue).SingleOrDefault();
+                        string filename = manual.archivo.FileName.ToString();
+                        string directory = rutafisica.Replace("\\", "/");
+                        //string rutaguardado = string.Concat(rutafisica.Replace("\\", "/"), filename);
+                        //manual.ruta = string.Concat(rutavirtual.Replace("\\", "/"), filename);
+                        manual.ruta = string.Concat(rutafisica.Replace("\\", "/"), filename);
+                        if (!System.IO.Directory.Exists(directory))
+                        {
+                            System.IO.Directory.CreateDirectory(directory);                            
+                        }
+                        if (!System.IO.File.Exists(manual.ruta))
+                        {
+                            manual.archivo.SaveAs(manual.ruta);
+                            bandera = true;
+                        }
+                    }
+                    else
+                    {
+                        bandera = false;
+                    }
+                }
+                else
+                {
+                    bandera = false;
+                }
             }
-            catch (Exception e)
+            else {
+                bandera = true;
+            }
+
+            if (bandera)
             {
-                throw e;
+
             }
+
+            //manual.CTipoDocumento = "PDF";
+            //manual.cUsuCodigo = (int)Session["CodigoUsuario"];
+            //manual.version = "1.0";
+            //manual.ruta = "RutaPorDefault-NoDisponible";
+            //manual.CPadre = jerarquiaPadre;
+
+            //try
+            //{
+            //    con = conexion.Instancia.Conectar();
+            //    con.Open();
+            //    cmd = new SqlCommand("CrearManualHijo", con);
+            //    cmd.CommandType = CommandType.StoredProcedure;
+
+            //    cmd.Parameters.Add("@cNombreManual", SqlDbType.VarChar).Value = manual.CNombreManual;
+            //    cmd.Parameters.Add("@cDescripcion", SqlDbType.VarChar).Value = manual.cDescripcion;
+            //    cmd.Parameters.Add("@bEstado", SqlDbType.Bit).Value = true;
+            //    //NO TIENE PADRE 
+            //    cmd.Parameters.AddWithValue("@cPadre", SqlDbType.VarChar).Value = manual.CPadre;
+            //    // SE AUTOASIGNA JERARQUIA EN SQL
+            //    cmd.Parameters.Add("@cTipoDocumento", SqlDbType.VarChar).Value = manual.CTipoDocumento;
+            //    cmd.Parameters.Add("@cUsuCodigo", SqlDbType.Int).Value = manual.cUsuCodigo;
+            //    cmd.Parameters.Add("@version", SqlDbType.VarChar).Value = manual.version;
+            //    cmd.Parameters.Add("@dFechaRegistro", SqlDbType.DateTime).Value = DateTime.Today;
+            //    cmd.Parameters.Add("@ruta", SqlDbType.VarChar).Value = manual.ruta;
+            //    cmd.ExecuteNonQuery();
+            //    con.Close();
+            //}
+            //catch (Exception e)
+            //{
+            //    throw e;
+            //}
             return RedirectToAction("ListarManuales", "Manual");
 
         }
@@ -219,6 +277,45 @@ namespace noticias.Controllers
             return RedirectToAction("ListarManuales", "Manual");
         }
 
+
+
+
+        public static DataTable fn_Get_SysFileConfiguracion_cPerJurCodigo_nSysModulo(int nSysModulo)
+        {
+            DataTable dtResponse = new DataTable();
+            SqlConnection con = null;
+            SqlCommand cmd = null;
+            SqlDataReader dr = null;
+            try
+            {
+
+                using (con = conexion.Instancia.Conectar())
+                {
+                    con.Open();
+                    using (cmd = new SqlCommand())
+                    {
+                        cmd.CommandText = "Usp_Get_SysFileConfiguracion_cPerJurCodigo_nSysModulo";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        //cmd.Parameters.AddWithValue("@cPerJurCodigo ", cPerJurCodigo);
+                        cmd.Parameters.AddWithValue("@nSysModulo", nSysModulo);
+                        cmd.Connection = con;
+                        using (dr = cmd.ExecuteReader())
+                        {
+                            if (dr.HasRows)
+                            {
+                                dtResponse.Load(dr);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            return dtResponse;
+        }
 
         #endregion
     }

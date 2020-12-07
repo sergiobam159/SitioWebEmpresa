@@ -94,7 +94,7 @@ font-size:smaller;
                 <td>
                     @{
                         if (item.nombreArchivo.Length > 0) {
-                            Html.ActionLink("Descargar", "Descargar", new { archivoManual = item.archivo.FileName.ToString() }, null);
+                            Html.ActionLink("Descargar", "Descargar", new { archivoManual = item.nombreArchivo }, null);
                             }
                     }
                             <!--@Html.DisplayFor(manualesItem => item.Ruta) -->

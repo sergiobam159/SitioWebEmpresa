@@ -113,42 +113,193 @@ namespace noticias.Controllers
         [HttpPost]
         public ActionResult CrearPadre(Manual manual)
         {
-            try
+            var bandera = true;
+
+            if (manual.cTipoDocumento == "PDF")
             {
-                manual.CTipoDocumento = "PDF";
-                manual.cUsuCodigo = (int)Session["CodigoUsuario"];
-                manual.version = "1.0";
-                manual.ruta = "RutaPorDefault-NoDisponible";
+                if (manual.archivo != null)
+                {
+                    string fileExtension = System.IO.Path.GetExtension(manual.archivo.FileName).ToUpper();
+                    if (fileExtension == ".PDF")
+                    {
+                        DataTable dtResponse = fn_Get_SysFileConfiguracion_cPerJurCodigo_nSysModulo(99);
+                        var rutafisica = (from c in dtResponse.AsEnumerable()
+                                          where c.Field<string>("cSysFileKey") == "LogFileManual"
+                                          select new
+                                          {
+                                              cSysFileValue = c.Field<String>("cSysFileValue")
+                                          }).Select(c => c.cSysFileValue).SingleOrDefault();
+                        //var rutavirtual = (from c in dtResponse.AsEnumerable()
+                        //                  where c.Field<string>("cSysFileKey") == "EvPathFileContrato"
+                        //                   select new
+                        //                  {
+                        //                      cSysFileValue = c.Field<String>("cSysFileValue")
+                        //                  }).Select(c => c.cSysFileValue).SingleOrDefault();
+                        string filename = manual.archivo.FileName.ToString();
+                        string directory = rutafisica.Replace("\\", "/");
+                        //string rutaguardado = string.Concat(rutafisica.Replace("\\", "/"), filename);
+                        //manual.ruta = string.Concat(rutavirtual.Replace("\\", "/"), filename);
+                        manual.ruta = string.Concat(rutafisica.Replace("\\", "/"), filename);
+                        if (!System.IO.Directory.Exists(directory))
+                        {
+                            System.IO.Directory.CreateDirectory(directory);
+                        }
+                        if (!System.IO.File.Exists(manual.ruta))
+                        {
+                            manual.archivo.SaveAs(manual.ruta);
+                            bandera = true;
+                        }
+                    }
+                    else
+                    {
+
+                        //RETORNAR ERROR -- IGRESE UN PDF
+                        bandera = false;
+                    }
+                }
+                else
+                {
+                    //RETORNAR ERROR -- INGRESE UN ARCHIVO
+                    bandera = false;
+                }
+            }
+            else
+            {
+                // asignar ruta si es video de youtube VIDEO DE YOUTUBE 
+                bandera = true;
+            }
+
+            if (bandera)
+            {
+                SqlCommand com = new SqlCommand();
                 con = conexion.Instancia.Conectar();
                 con.Open();
-                cmd = new SqlCommand("CrearNuevoManualPadre", con);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("@cNombreManual", SqlDbType.VarChar).Value = manual.CNombreManual;
-                cmd.Parameters.Add("@cDescripcion", SqlDbType.VarChar).Value = manual.cDescripcion;
-                cmd.Parameters.Add("@bEstado", SqlDbType.Bit).Value = true;
-                //NO TIENE PADRE 
-                cmd.Parameters.AddWithValue("@cPadre", DBNull.Value);
-                // SE AUTOASIGNA JERARQUIA EN SQL
-                cmd.Parameters.Add("@cTipoDocumento", SqlDbType.VarChar).Value = manual.CTipoDocumento;
-                cmd.Parameters.Add("@cUsuCodigo", SqlDbType.Int).Value = manual.cUsuCodigo;
-                cmd.Parameters.Add("@version", SqlDbType.VarChar).Value = manual.version;
-                cmd.Parameters.Add("@dFechaRegistro", SqlDbType.DateTime).Value = DateTime.Today;
-                cmd.Parameters.Add("@ruta", SqlDbType.VarChar).Value = manual.ruta;
-                cmd.Parameters.Add("nombreArchivo", SqlDbType.VarChar).Value = manual.nombreArchivo;
-                cmd.ExecuteNonQuery();
+                com.Connection = con;
+                com.CommandText = "select top 1 cJerarquia from MANUAL where cPadre is null order by cJerarquia desc";
+                dr = com.ExecuteReader();
+                
+                if (dr.Read())
+                {
+                    string ultimoPadre= dr["cJerarquia"].ToString();
+
+                    int nuevopadre = int.Parse(ultimoPadre) + 1;
+                    manual.cJerarquia = nuevopadre.ToString();
+
+                }
                 con.Close();
-               
+                if (manual.cTipoDocumento == "PDF")
+                {
+                    // si el manual es un pdf se pasa la ruta donde se guardo el archivo
+                    manual.cUsuCodigo = (int)Session["CodigoUsuario"];
+                    manual.version = "1.0";
+                    manual.nombreArchivo = manual.archivo.FileName.ToString();
+                   
+
+                    try
+                    {
+                        con = conexion.Instancia.Conectar();
+                        con.Open();
+                        cmd = new SqlCommand("CrearNuevoManualPadre", con);
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.Add("@cNombreManual", SqlDbType.VarChar).Value = manual.CNombreManual;
+                        cmd.Parameters.Add("@cDescripcion", SqlDbType.VarChar).Value = manual.cDescripcion;
+                        cmd.Parameters.Add("@bEstado", SqlDbType.Bit).Value = true;
+                        //NO TIENE PADRE 
+                        cmd.Parameters.AddWithValue("@cPadre", DBNull.Value);
+                        cmd.Parameters.Add("@cJerarquia", SqlDbType.VarChar).Value = manual.cJerarquia;
+                        cmd.Parameters.Add("@cTipoDocumento", SqlDbType.VarChar).Value = manual.CTipoDocumento;
+                        cmd.Parameters.Add("@cUsuCodigo", SqlDbType.Int).Value = manual.cUsuCodigo;
+                        cmd.Parameters.Add("@version", SqlDbType.VarChar).Value = manual.version;
+                        cmd.Parameters.Add("@dFechaRegistro", SqlDbType.DateTime).Value = DateTime.Today;
+                        cmd.Parameters.Add("@ruta", SqlDbType.VarChar).Value = manual.ruta;
+                        cmd.Parameters.Add("@nombreArchivo", SqlDbType.VarChar).Value = manual.nombreArchivo;
+                        cmd.ExecuteNonQuery();
+                        con.Close();
+                    }
+                    catch (Exception e)
+                    {
+                        throw e;
+                    }
+                }
+                else
+                {
+                    // si el manual es un video se pasa el link del video solamente
+                    manual.cUsuCodigo = (int)Session["CodigoUsuario"];
+                    manual.version = "1.0";
+
+                   
+
+                    try
+                    {
+                        con = conexion.Instancia.Conectar();
+                        con.Open();
+                        cmd = new SqlCommand("CrearNuevoManualPadre", con);
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.Add("@cNombreManual", SqlDbType.VarChar).Value = manual.CNombreManual;
+                        cmd.Parameters.Add("@cDescripcion", SqlDbType.VarChar).Value = manual.cDescripcion;
+                        cmd.Parameters.Add("@bEstado", SqlDbType.Bit).Value = true;
+                        //NO TIENE PADRE 
+                        cmd.Parameters.AddWithValue("@cPadre", DBNull.Value);
+                        // SE AUTOASIGNA JERARQUIA EN SQL
+                        cmd.Parameters.Add("@cTipoDocumento", SqlDbType.VarChar).Value = manual.CTipoDocumento;
+                        cmd.Parameters.Add("@cUsuCodigo", SqlDbType.Int).Value = manual.cUsuCodigo;
+                        cmd.Parameters.Add("@version", SqlDbType.VarChar).Value = manual.version;
+                        cmd.Parameters.Add("@dFechaRegistro", SqlDbType.DateTime).Value = DateTime.Today;
+                        cmd.Parameters.Add("@ruta", SqlDbType.VarChar).Value = manual.ruta;
+                        cmd.ExecuteNonQuery();
+                        con.Close();
+                    }
+                    catch (Exception e)
+                    {
+                        throw e;
+                    }
+                }
+
+
             }
-            catch (Exception e)
-            {
-                throw e;
-            }
+
             return RedirectToAction("ListarManuales", "Manual");
+            /*  try
+              {
+                  manual.CTipoDocumento = "PDF";
+                  manual.cUsuCodigo = (int)Session["CodigoUsuario"];
+                  manual.version = "1.0";
+                  manual.ruta = "RutaPorDefault-NoDisponible";
+                  con = conexion.Instancia.Conectar();
+                  con.Open();
+                  cmd = new SqlCommand("CrearNuevoManualPadre", con);
+                  cmd.CommandType = CommandType.StoredProcedure;
+                  cmd.Parameters.Add("@cNombreManual", SqlDbType.VarChar).Value = manual.CNombreManual;
+                  cmd.Parameters.Add("@cDescripcion", SqlDbType.VarChar).Value = manual.cDescripcion;
+                  cmd.Parameters.Add("@bEstado", SqlDbType.Bit).Value = true;
+                  //NO TIENE PADRE 
+                  cmd.Parameters.AddWithValue("@cPadre", DBNull.Value);
+                  // SE AUTOASIGNA JERARQUIA EN SQL
+                  cmd.Parameters.Add("@cTipoDocumento", SqlDbType.VarChar).Value = manual.CTipoDocumento;
+                  cmd.Parameters.Add("@cUsuCodigo", SqlDbType.Int).Value = manual.cUsuCodigo;
+                  cmd.Parameters.Add("@version", SqlDbType.VarChar).Value = manual.version;
+                  cmd.Parameters.Add("@dFechaRegistro", SqlDbType.DateTime).Value = DateTime.Today;
+                  cmd.Parameters.Add("@ruta", SqlDbType.VarChar).Value = manual.ruta;
+                  cmd.Parameters.Add("nombreArchivo", SqlDbType.VarChar).Value = manual.nombreArchivo;
+                  cmd.ExecuteNonQuery();
+                  con.Close();
+
+              }
+              catch (Exception e)
+              {
+                  throw e;
+              }
+
+
+
+            return RedirectToAction("ListarManuales", "Manual");*/
         }
 
 
 
-        string jerarquiaPadree;
+        
         [HttpGet]
         public ActionResult CrearHijo(string  jerarquiaPadre)
         {

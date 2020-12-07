@@ -92,7 +92,12 @@ font-size:smaller;
                     @Html.DisplayFor(manualesItem => item.DFechaRegistro)
                 </td>
                 <td>
-                    @Html.DisplayFor(manualesItem => item.Ruta)
+                    @{
+                        if (item.nombreArchivo.Length > 0) {
+                            Html.ActionLink("Descargar", "Descargar", new { archivoManual = item.archivo.FileName.ToString() }, null);
+                            }
+                    }
+                            <!--@Html.DisplayFor(manualesItem => item.Ruta) -->
                 </td>
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ })
@@ -126,8 +131,8 @@ font-size:smaller;
     @helper MostrarHijos(IEnumerable<noticias.Models.Manual> manuales)
     {
 
-        foreach (var item in manuales)
-        {
+foreach (var item in manuales)
+{
 
 
             <tr id="@(item.CJerarquia)" class="@(item.cJerarquia)" onclick="mostrar(this.id)" style="padding-left:50px; display: none;">
@@ -165,11 +170,21 @@ font-size:smaller;
                 <td>
                     @Html.DisplayFor(manualesItem => item.DFechaRegistro)
                 </td>
+                
                 <td>
-                    @Html.DisplayFor(manualesItem => item.Ruta)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ })
+                    @{
+                    if(item.cTipoDocumento=="PDF")       
+                    {
+                        if (item.nombreArchivo.Length > 0)
+                        {
+                            @Html.ActionLink("Descargar", "Descargar", new { NombreArchivo = item.nombreArchivo }, null);
+                            }
+                        }
+                        else
+                        {
+                            <a href="@item.ruta" target="_blank">Ir a Video</a>
+                        }
+                        }
                 </td>
                 <td>
                     <text>hijos: @item.hijos.Count </text>

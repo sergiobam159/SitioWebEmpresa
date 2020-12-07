@@ -6,8 +6,8 @@ using System.Web.Mvc;
 using System.Data.SqlClient;
 using noticias.Models;
 using System.Data;
-
-
+using System.Web.Hosting;
+using System.IO;
 
 namespace noticias.Controllers
 {
@@ -70,7 +70,7 @@ namespace noticias.Controllers
                 manual.version = Convert.ToString(dr["version"]);
                 manual.dFechaRegistro = Convert.ToDateTime(dr["dFechaRegistro"]);
                 manual.ruta = Convert.ToString(dr["ruta"]);
-                
+                manual.nombreArchivo = Convert.ToString(dr["cNombreArchivo"]);
                 manuales.Add(manual);
 
             }
@@ -96,7 +96,12 @@ namespace noticias.Controllers
         {
 
         }
+        public FileResult Descargar(string NombreArchivo)
+        {
 
+            var FileVirtualPath = "~/FILE_SYSTEM/WEB/FILE/" + NombreArchivo;
+            return File(FileVirtualPath, "application/force- download", Path.GetFileName(FileVirtualPath));
+        }
         [HttpGet]
         public ActionResult CrearPadre()
         {
@@ -129,6 +134,7 @@ namespace noticias.Controllers
                 cmd.Parameters.Add("@version", SqlDbType.VarChar).Value = manual.version;
                 cmd.Parameters.Add("@dFechaRegistro", SqlDbType.DateTime).Value = DateTime.Today;
                 cmd.Parameters.Add("@ruta", SqlDbType.VarChar).Value = manual.ruta;
+                cmd.Parameters.Add("nombreArchivo", SqlDbType.VarChar).Value = manual.nombreArchivo;
                 cmd.ExecuteNonQuery();
                 con.Close();
                
@@ -156,6 +162,7 @@ namespace noticias.Controllers
         public ActionResult CrearHijo(string jerarquiaPadre, Manual manual)
         {
             jerarquiaPadre = TempData["jerarquiaPadre"].ToString();
+            
                var bandera = true;
 
             if (manual.cTipoDocumento == "PDF")
@@ -218,7 +225,7 @@ namespace noticias.Controllers
                     // si el manual es un pdf se pasa la ruta donde se guardo el archivo
                     manual.cUsuCodigo = (int)Session["CodigoUsuario"];
                     manual.version = "1.0";
-                    
+                    manual.nombreArchivo = manual.archivo.FileName.ToString();
                     manual.CPadre = jerarquiaPadre;
 
                     try
@@ -239,6 +246,7 @@ namespace noticias.Controllers
                         cmd.Parameters.Add("@version", SqlDbType.VarChar).Value = manual.version;
                         cmd.Parameters.Add("@dFechaRegistro", SqlDbType.DateTime).Value = DateTime.Today;
                         cmd.Parameters.Add("@ruta", SqlDbType.VarChar).Value = manual.ruta;
+                        cmd.Parameters.Add("@nombreArchivo", SqlDbType.VarChar).Value = manual.nombreArchivo;
                         cmd.ExecuteNonQuery();
                         con.Close();
                     }

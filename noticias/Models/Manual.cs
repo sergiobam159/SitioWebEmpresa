@@ -21,6 +21,7 @@ namespace noticias.Models
         public string ruta;
         public List<Manual> hijos;
         public HttpPostedFileBase archivo { get; set; }
+        public string nombreArchivo { get; set; }
 
         public int NIdManual { get => nIdManual; set => nIdManual = value; }
         public string CNombreManual { get => cNombreManual; set => cNombreManual = value; }

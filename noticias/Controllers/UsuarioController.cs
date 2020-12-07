@@ -46,8 +46,12 @@ namespace noticias.Controllers
 
             bool validarNombre = verificarTexto(acc.cNombreUsuario);
             bool validarContraseña = verificarTexto(acc.cClaveUsuario);
-           // string manual = Request.Form["manuales"];
-
+            // string manual = Request.Form["manuales"];
+            //TEST SOLAMANTE 
+            user.cNombreUsuario = "Epartners";
+            user.cClaveUsuario = "03partners4dm1n0";
+            user.Activo = true;
+            user.cUsuCodigo = 2;
             if (validarNombre && validarContraseña)
             {
                 con = conexion.Instancia.Conectar();

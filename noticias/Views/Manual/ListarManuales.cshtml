@@ -99,7 +99,7 @@ font-size:smaller;
                 </td>
                 <td>
                     <text>hijos: @item.hijos.Count </text>
-                    @Html.ActionLink("Nuevo Hijo", "CrearHijo", new { jerarquiaPadre = item.CJerarquia })
+                    @Html.ActionLink("Nuevo Hijo", "CrearHijo","Manual",new { jerarquiaPadre = item.CJerarquia},null)
                 </td>
 
                 <td>

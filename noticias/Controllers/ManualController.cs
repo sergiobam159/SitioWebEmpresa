@@ -142,11 +142,11 @@ namespace noticias.Controllers
 
 
 
-
+        string jerarquiaPadree;
         [HttpGet]
         public ActionResult CrearHijo(string  jerarquiaPadre)
         {
-          
+            TempData["jerarquiaPadre"] = jerarquiaPadre;
 
             return View(new Manual());
             
@@ -155,7 +155,8 @@ namespace noticias.Controllers
         [HttpPost]
         public ActionResult CrearHijo(string jerarquiaPadre, Manual manual)
         {
-            var bandera = false;
+            jerarquiaPadre = TempData["jerarquiaPadre"].ToString();
+               var bandera = true;
 
             if (manual.cTipoDocumento == "PDF")
             {

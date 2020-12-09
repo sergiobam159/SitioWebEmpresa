@@ -6,20 +6,36 @@
 
     <div class="padding-all">
         <div class="header">
-            <h1>GESTIONAR NOTICIAS</h1>
+            <h1 style="padding-top: 100px">ADMINISTRADOR</h1>
            
-            <div id="forminicio" style="text-align:center; margin-top:10%">
+            <div id="forminicio" style="text-align:center; margin-top: 60px">
                 
                 
                 <form action="Verificar" method="post">
-
+                    <div>
+                        <div class="text-center">
+                            <text style="padding-right: 2%;">Usuario:</text>
+                            <input type="text" name="cNombreUsuario" placeholder="usuario" required="" />
+                        </div>
+                        <br />
+                        <div class="text-center">
+                            <text style="padding-right: 1%;">Contraseña:</text>
+                            <input type="password" name="cClaveUsuario" class="padding" placeholder="contraseña" required="" />
+                        </div>
+                    </div>
+                    <div  class="container" style="align-content:center;">
+                        <div class="row" style="margin-bottom:5px; margin-top:2%">
+                            <text>Noticias</text> @Html.RadioButton("seleccion", "Noticias")
+                        </div>
+                        <div class="row"
+                            <text>Manuales</text> @Html.RadioButton("seleccion", "Manuales")
+                        </div>
+                    </div>
+                    <div>
+                        <input type="submit" value="ingresar" style="margin-right:35px">
+                        @Html.ActionLink("Cancelar", "InicioNoticias", "Noticia")
+                    </div>
                     
-                    Noticias @Html.RadioButton("seleccion", "Noticias")
-                    Manuales @Html.RadioButton("seleccion", "Manuales")
-
-                    <input type="text" name="cNombreUsuario" placeholder="usuario" required="" />
-                    <input type="password" name="cClaveUsuario" class="padding" placeholder="contraseña" required="" />
-                    <input type="submit" value="ingresar">
                 </form>
             </div>
         <div class="clear"> </div>
@@ -28,7 +44,7 @@
 
 
     </div>
-@Html.ActionLink("Volver a Noticias", "InicioNoticias", "Noticia")
+
 <footer style="bottom: 0px; position:absolute; width:100%">
 <div id="subfooter" style="text-align:center">
     <div class="container">

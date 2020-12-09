@@ -13,7 +13,7 @@ namespace noticias.Models
         public string cTituloPublicacion;
         public string cLugarDePublicacion;
         public int cUsuCodigo;
-        public int nidNoticia_seccion;
+        public string nidNoticia_seccion;
         public string cSubtitulo;
         public string cTextoSubtitulo;
         public int idVideo;
@@ -53,7 +53,7 @@ namespace noticias.Models
         public string CContenidoPublicacion { get => cContenidoPublicacion; set => cContenidoPublicacion = value; }
         public string CLugarDePublicacion { get => cLugarDePublicacion; set => cLugarDePublicacion = value; }
         public int CUsuCodigo { get => cUsuCodigo; set => cUsuCodigo = value; }
-        public int NidNoticia_seccion { get => nidNoticia_seccion; set => nidNoticia_seccion = value; }
+        public string NidNoticia_seccion { get => nidNoticia_seccion; set => nidNoticia_seccion = value; }
         public string CSubtitulo { get => cSubtitulo; set => cSubtitulo = value; }
         public string CTextoSubtitulo { get => cTextoSubtitulo; set => cTextoSubtitulo = value; }
         public int IdVideo { get => idVideo; set => idVideo = value; }

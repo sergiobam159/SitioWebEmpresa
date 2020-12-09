@@ -7,9 +7,17 @@
 
 <h2>Manuales</h2>
 
-<p>
-    @Html.ActionLink("Crear Nuevo Padre", "CrearPadre", "Manual")
-</p>
+<div>
+    <div class="col-sm-5">
+       
+    </div>
+    <div class="col-sm-6" style="padding-bottom: 30px">
+        @Html.ActionLink("Regresar a noticias", "InicioNoticias","Noticia") |
+        @Html.ActionLink("Crear Nuevo Padre", "CrearPadre", "Manual")
+      
+    </div>
+   
+</div>
 <!--
 <style>
     table {
@@ -93,11 +101,18 @@ font-size:smaller;
                 </td>
                 <td>
                     @{
-                        if (item.nombreArchivo.Length > 0) {
-                            Html.ActionLink("Descargar", "Descargar", new { archivoManual = item.nombreArchivo }, null);
+                        if (item.cTipoDocumento == "PDF")
+                        {
+                            if (item.nombreArchivo.Length > 0)
+                            {
+                                @Html.ActionLink("Descargar", "Descargar", new { NombreArchivo = item.nombreArchivo }, null);
                             }
+                        }
+                        else
+                        {
+                            <a href="@item.ruta" target="_blank">Ir a Video</a>
+                        }
                     }
-                            <!--@Html.DisplayFor(manualesItem => item.Ruta) -->
                 </td>
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ })

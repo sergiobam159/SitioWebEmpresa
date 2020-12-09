@@ -9,6 +9,7 @@ using System.Data;
 using System.IO;
 using System.Web.Helpers;
 using System.Drawing;
+
 namespace noticias.Controllers
 {
     
@@ -106,7 +107,7 @@ namespace noticias.Controllers
                     n.CTituloPublicacion = Convert.ToString(dr["cTituloPublicacion"]);
                     n.CLugarDePublicacion = Convert.ToString(dr["cLugarDePublicacion"]);
                     n.CUsuCodigo = Convert.ToInt32(dr["cUsuCodigo"]);
-                    n.NidNoticia_seccion = Convert.ToInt16(dr["nidNoticia.Seccion"]);
+                    n.NidNoticia_seccion = Convert.ToString(dr["nidNoticia.Seccion"]);
                     n.CSubtitulo = Convert.ToString(dr["csubtitulo"]);
                     n.CTextoSubtitulo = Convert.ToString(dr["cTextoSubtitulo"]);
                     //VIDEO[idVideo]
@@ -310,7 +311,7 @@ namespace noticias.Controllers
             n.CTituloPublicacion = Convert.ToString(dr["cTituloPublicacion"]);
             n.CLugarDePublicacion = Convert.ToString(dr["cLugarDePublicacion"]);
             n.CUsuCodigo = Convert.ToInt32(dr["cUsuCodigo"]);
-            n.NidNoticia_seccion = Convert.ToInt16(dr["nidNoticia.Seccion"]);
+            n.NidNoticia_seccion = Convert.ToString(dr["nidNoticia.Seccion"]);
             n.CSubtitulo = Convert.ToString(dr["csubtitulo"]);
             n.CTextoSubtitulo = Convert.ToString(dr["cTextoSubtitulo"]);
             //VIDEO[idVideo]
@@ -331,6 +332,8 @@ namespace noticias.Controllers
             //FECHA ESTA EN FORMATO YYYYMMDD '20170519' dentro del script
 
           
+
+
                 con = conexion.Instancia.Conectar();
                 con.Open();
                 cmd = new SqlCommand("EditarPublicacion", con);
@@ -359,7 +362,7 @@ namespace noticias.Controllers
                 throw e;
             }
 
-            return RedirectToAction("vistaCrud", "Noticia");
+            return RedirectToAction("vistaCrud", "Noticia", new { inicial = 0, elementos = 5 });
 
         }
         #endregion
@@ -392,7 +395,7 @@ namespace noticias.Controllers
                     n.CTituloPublicacion = Convert.ToString(dr["cTituloPublicacion"]);
                     n.CLugarDePublicacion = Convert.ToString(dr["cLugarDePublicacion"]);
                     n.CUsuCodigo = Convert.ToInt32(dr["cUsuCodigo"]);
-                    n.NidNoticia_seccion = Convert.ToInt16(dr["nidNoticia.Seccion"]);
+                    n.NidNoticia_seccion = Convert.ToString(dr["nidNoticia.Seccion"]);
                     n.CSubtitulo = Convert.ToString(dr["csubtitulo"]);
                     n.CTextoSubtitulo = Convert.ToString(dr["cTextoSubtitulo"]);
 
@@ -476,7 +479,7 @@ namespace noticias.Controllers
             noticiaSel.CTituloPublicacion = Convert.ToString(dr["cTituloPublicacion"]);
             noticiaSel.CLugarDePublicacion = Convert.ToString(dr["cLugarDePublicacion"]);
             noticiaSel.CUsuCodigo = Convert.ToInt32(dr["cUsuCodigo"]);
-            noticiaSel.NidNoticia_seccion = Convert.ToInt16(dr["nidNoticia.Seccion"]);
+            noticiaSel.NidNoticia_seccion = Convert.ToString(dr["nidNoticia.Seccion"]);
             noticiaSel.CSubtitulo = Convert.ToString(dr["csubtitulo"]);
             noticiaSel.CTextoSubtitulo = Convert.ToString(dr["cTextoSubtitulo"]);
 
@@ -541,7 +544,7 @@ namespace noticias.Controllers
                     n.CTituloPublicacion = Convert.ToString(dr["cTituloPublicacion"]);
                     n.CLugarDePublicacion = Convert.ToString(dr["cLugarDePublicacion"]);
                     n.CUsuCodigo = Convert.ToInt32(dr["cUsuCodigo"]);
-                    n.NidNoticia_seccion = Convert.ToInt16(dr["nidNoticia.Seccion"]);
+                    n.NidNoticia_seccion = Convert.ToString(dr["nidNoticia.Seccion"]);
                     n.CSubtitulo = Convert.ToString(dr["csubtitulo"]);
                     n.CTextoSubtitulo = Convert.ToString(dr["cTextoSubtitulo"]);
 

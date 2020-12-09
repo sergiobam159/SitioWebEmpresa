@@ -181,9 +181,18 @@ namespace noticias.Controllers
                 if (dr.Read())
                 {
                     string ultimoPadre= dr["cJerarquia"].ToString();
+                    if(int.Parse(ultimoPadre) > 9) {
+                        int nuevopadre = int.Parse(ultimoPadre) + 1;
+                        manual.cJerarquia = nuevopadre.ToString();
+                    }
+                    else
+                    {
+                        int nuevopadre = int.Parse(ultimoPadre) + 1;
+                        manual.cJerarquia = string.Concat(0,nuevopadre.ToString());
 
-                    int nuevopadre = int.Parse(ultimoPadre) + 1;
-                    manual.cJerarquia = nuevopadre.ToString();
+                    }
+
+                    
 
                 }
                 con.Close();
@@ -242,7 +251,8 @@ namespace noticias.Controllers
                         cmd.Parameters.Add("@bEstado", SqlDbType.Bit).Value = true;
                         //NO TIENE PADRE 
                         cmd.Parameters.AddWithValue("@cPadre", DBNull.Value);
-                        // SE AUTOASIGNA JERARQUIA EN SQL
+                        cmd.Parameters.AddWithValue("@cJerarquia",SqlDbType.VarChar).Value= manual.cJerarquia;
+                        cmd.Parameters.Add("@nombreArchivo", DBNull.Value);
                         cmd.Parameters.Add("@cTipoDocumento", SqlDbType.VarChar).Value = manual.CTipoDocumento;
                         cmd.Parameters.Add("@cUsuCodigo", SqlDbType.Int).Value = manual.cUsuCodigo;
                         cmd.Parameters.Add("@version", SqlDbType.VarChar).Value = manual.version;

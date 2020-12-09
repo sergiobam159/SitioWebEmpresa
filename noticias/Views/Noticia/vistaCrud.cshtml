@@ -7,46 +7,54 @@
     Layout = "~/Views/_LayoutPage1.cshtml";
 }
 
-<h2 >GESTION DE NOTICIAS</h2>
+<h2 >ADMINISTRAR NOTICIAS</h2>
 <button id="botonCrear">
 @Html.ActionLink("Crear", "Crear")
     </button>
 <div style="overflow-x:auto;">
-    <table id="tablaNoticias">
-        <thead>
-            <tr>
-                <th> ID</th>
-                <th>Titulo Noticia</th>
-                <th>Fecha Publicado</th>
-                <th>Autor</th>
-                <th>Usuario</th>
-                <th>Opciones</th>
+    <div class="row" style="width:100%">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-9">
+            @Html.ActionLink("Cerrar sesion y volver a voticias", "InicioNoticias")
+        </div>
+
+    </div>
+
+            <table id="tablaNoticias">
+                <thead>
+                    <tr>
+                        <th> ID</th>
+                        <th>Titulo Noticia</th>
+                        <th>Fecha Publicado</th>
+                        <th>Autor</th>
+                        <th>Usuario</th>
+                        <th>Opciones</th>
 
 
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>@item.nIdPublicacion</td>
-                    <td>@item.cTituloPublicacion</td>
-                    <td>@item.dFechaPublicacion</td>
-                    <td>@item.idAutor</td>
-                    <td>@item.cUsuCodigo</td>
-                    <td>
-                        <ul style="padding-left:0px">
-                            <a title="Eliminar" onclick="return confirm('¿Esta seguro?');" href="~/Noticia/EliminarNoticia/@item.nIdPublicacion">X</a>
-                            @Html.ActionLink("Editar", "Editar", new { id = item.nIdPublicacion })
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.nIdPublicacion</td>
+                            <td>@item.cTituloPublicacion</td>
+                            <td>@item.dFechaPublicacion</td>
+                            <td>@item.idAutor</td>
+                            <td>@item.cUsuCodigo</td>
+                            <td>
+                                <ul style="padding-left:0px">
+                                    <a title="Eliminar" onclick="return confirm('¿Esta seguro?');" href="~/Noticia/EliminarNoticia/@item.nIdPublicacion">X</a>
+                                    @Html.ActionLink("Editar", "Editar", new { id = item.nIdPublicacion })
 
-                        </ul>
-                    </td>
-                </tr>
-            }
+                                </ul>
+                            </td>
+                        </tr>
+                    }
 
-        </tbody>
-    </table>
-</div>
+                </tbody>
+            </table>
+        </div>
 
 
 <nav aria-label="Page navigation example" id="navegadorLista">
@@ -58,7 +66,7 @@
                 @Html.ActionLink("Atras", "vistaCrud", new { inicial = (Model.Last().nIdPublicacion - 10), elementos = 5 })
             }
         </li>
-        @for (int i = 0; i < ViewBag.cantidadDePaginas; i++)
+        @for (int i = 0; i < ViewBag.cantidadDePaginas-1; i++)
         {
             //AQUI SE TIENE QUE LLAMAR A LA FUNCION VISTACRUD PERO CON LOS VALORES CAMBIADOS  CON EL iAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
             //AQUI EVALUA SI LA ULTIMA PUBLICACION DE LA LISTA MODEL ES LA ULTIMA DE LA BASE DE DATOS
@@ -81,4 +89,3 @@
 
 
 <br>
-@Html.ActionLink("Cerrar sesion y volver a voticias", "InicioNoticias")

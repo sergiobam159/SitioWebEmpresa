@@ -157,6 +157,8 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="imgs\estudiante-laptop.jpg" />
+    <Content Include="imgs\internet-cloud.jpg" />
     <Content Include="imgs\loglocabeceratest.jpg" />
     <Content Include="imgs\LogoGrande.png" />
     <Content Include="js\animate.js" />
@@ -213,6 +215,7 @@
     <Content Include="Views\Manual\ListarManuales.cshtml" />
     <Content Include="Views\Manual\CrearPadre.cshtml" />
     <Content Include="Views\Manual\CrearHijo.cshtml" />
+    <Content Include="Views\Manual\vistaManuales.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

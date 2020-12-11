@@ -23,6 +23,54 @@ namespace noticias.Controllers
         SqlCommand cmd = new SqlCommand();
         SqlDataReader dr;
 
+
+        public ActionResult vistaManuales()
+        {
+            List<Manual> manuales = new List<Manual>();
+            List<Manual> manualesHijos = new List<Manual>();
+
+            con = conexion.Instancia.Conectar();
+            con.Open();
+            cmd = new SqlCommand("ObtenerTodosLosManuales", con);
+            SqlDataReader dr = cmd.ExecuteReader();
+            while (dr.Read())
+            {
+
+                Manual manual = new Manual();
+                manual.cNombreManual = Convert.ToString(dr["cNombreManual"]);
+                manual.NIdManual = Convert.ToInt32(dr["nIDManual"]);
+                manual.cDescripcion = Convert.ToString(dr["cDescripcion"]);
+                manual.bEstado = Convert.ToBoolean(dr["bEstado"]);
+                manual.cPadre = Convert.ToString(dr["cPadre"]);
+                manual.cJerarquia = Convert.ToString(dr["cJerarquia"]);
+                manual.CTipoDocumento = Convert.ToString(dr["ctipoDocumento"]);
+                manual.cUsuCodigo = Convert.ToInt32(dr["CUsuCodigo"]);
+                manual.version = Convert.ToString(dr["version"]);
+                manual.dFechaRegistro = Convert.ToDateTime(dr["dFechaRegistro"]);
+                manual.ruta = Convert.ToString(dr["ruta"]);
+                manual.nombreArchivo = Convert.ToString(dr["cNombreArchivo"]);
+                manuales.Add(manual);
+
+            }
+            con.Close();
+
+            asignarHijos(manuales);
+
+
+            List<Manual> Padres = new List<Manual>();
+
+            foreach (var manual in manuales)
+            {
+                if (manual.CPadre == "") { Padres.Add(manual); }
+            }
+
+            return View(Padres);
+
+           
+        }
+
+
+        #region listarManuales
         public void asignarHijos(List<Manual> manuales)
         {
             
@@ -44,7 +92,7 @@ namespace noticias.Controllers
 
        
 
-        #region listarManuales
+       
 
         public ActionResult ListarManuales()
         {
@@ -192,8 +240,12 @@ namespace noticias.Controllers
 
                     }
 
-                    
 
+
+                }
+                else
+                {
+                    manual.cJerarquia = "01";
                 }
                 con.Close();
                 if (manual.cTipoDocumento == "PDF")
@@ -252,7 +304,7 @@ namespace noticias.Controllers
                         //NO TIENE PADRE 
                         cmd.Parameters.AddWithValue("@cPadre", DBNull.Value);
                         cmd.Parameters.AddWithValue("@cJerarquia",SqlDbType.VarChar).Value= manual.cJerarquia;
-                        cmd.Parameters.Add("@nombreArchivo", DBNull.Value);
+                        cmd.Parameters.AddWithValue("@nombreArchivo", DBNull.Value);
                         cmd.Parameters.Add("@cTipoDocumento", SqlDbType.VarChar).Value = manual.CTipoDocumento;
                         cmd.Parameters.Add("@cUsuCodigo", SqlDbType.Int).Value = manual.cUsuCodigo;
                         cmd.Parameters.Add("@version", SqlDbType.VarChar).Value = manual.version;
@@ -442,6 +494,8 @@ namespace noticias.Controllers
                         cmd.Parameters.Add("@version", SqlDbType.VarChar).Value = manual.version;
                         cmd.Parameters.Add("@dFechaRegistro", SqlDbType.DateTime).Value = DateTime.Today;
                         cmd.Parameters.Add("@ruta", SqlDbType.VarChar).Value = manual.ruta;
+
+                        cmd.Parameters.AddWithValue("@nombreArchivo", DBNull.Value);
                         cmd.ExecuteNonQuery();
                         con.Close();
                     }

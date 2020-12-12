@@ -1,9 +1,13 @@
 ﻿@model IEnumerable<noticias.Models.Manual>
+
+
+
 @{
+
     ViewBag.Title = "vistaManuales";
     Layout = "~/Views/_LayoutPage1.cshtml";
 }
-
+@using noticias.extensions;
 <div id="wrapper" style="overflow-x:hidden">
     <div class="topbar">
         <div class="container">
@@ -62,42 +66,84 @@
             </div>
         </div>
     </header>
-
+    <!--#########################################-->
     <div class="row" style="padding-inline:18%; padding-top:80px">
-        <div class="col-sm-6" >
+        <div class="col-sm-6">
             <h3>Nuestros paquetes</h3>
-            <p style="padding-top:3%">En esta seccion le omstramos en detalle todo loq ue le ofrecemos en nuestros distintos paqueres detallando sus modulos.</p>
-            
+            <p style="padding-top:3%">En esta seccion le mostramos en detalle todo lo que le ofrecemos en nuestros distintos paquetes detallando sus modulos.</p>
+
             <p>sientase libre de exporar nuestras distintas opciones, leer nuestra documentacion y revisar nuestros videos introductorios.</p>
         </div>
         <div class="col-sm-6" style="text-align:center">
 
-            <img src="~/imgs/internet-cloud.jpg" class="img-fluid" title="Informate con nosotros" style="width:85%"/>
+            <img src="~/imgs/internet-cloud.jpg" class="img-fluid" title="Informate con nosotros" style="width:85%" />
 
         </div>
-</div>
-        <div>
+    </div>
+    <div>
 
-            <div class="container">
-                <ul class="list-group ">
-                    @{
-                        foreach (var item in Model)
+        <div class="container">
+            <ul class="list-group ">
+                @{
+
+                    foreach (var item in Model)
+                    {
+                              
+
+                        <li id="@(item.CNombreManual)" onclick="mostrarEsconderHijos(this.id)" class="list-group-item-heading" style="border-bottom:solid;border-bottom-color:darkgrey;list-style:none;font-family: Montserrat; font-weight:200;font-size:18px ">@(item.CNombreManual)</li>
+
+                        foreach (var item2 in item.hijos)
                         {
-                            <li class="list-group-item-heading" style="border-bottom:solid;border-bottom-color:darkgrey;list-style:none;font-family: Montserrat; font-weight:200;font-size:18px ">@item.CNombreManual  </li>
-                            foreach(var item2 in item.hijos)
-                            {
-                                //separar en 2 elementos en un solo nivel izquierad y derecha, derecha links y arrhivos
-                                <li class="list-group-item" style="text-align:left">@item2.cDescripcion </li>
-                            }
+                            //separar en 2 elementos en un solo nivel izquierad y derecha, derecha links y arrhivos
+                            <li id="_@(item.cNombreManual)" class="list-group-item" style="text-align:left; display:none">
+                                @(item2.CNombreManual)
+                                @Html.ImageActionLink("Ver PDF", "Descargar", "Manual", new { NombreArchivo =item2.hijos.Count() > 0? item2.hijos[0].nombreArchivo:"0" }, null, "~/imgs/LecturaPdf.png")
+                                <a href=" " target="_blank"> <img src="~/imgs/LecturaPdf.png" title="documentacion" style="width: 20px;height:20px; float:right " />  </a>
+                                <a href="@(item2.ruta)" target="_blank"> <img src="~/imgs/iconoYoutube.png" title="video Youtube" style="width: 20px;height:20px;float:right" /> </a>
 
+                            </li>
 
                         }
+
+
                     }
+                }
 
+            </ul>
 
-
-            </div>
         </div>
+    </div>
+
+    <script>
+        function mostrarEsconderHijos(padre) {
+
+            var elementos = document.querySelectorAll("#_" + padre);
+            console.log(elementos);
+            for (var i = 0; i < elementos.length; i++) {
+                if (elementos[i].style.display === "none") {
+
+                    //  elementos[i].style.display = "block";
+                    aparecer(elementos[i]);
+                } else {
+                    elementos[i].style.display = "none";
+                }
+            }
+
+        }
+        function aparecer(element) {
+            var op = 0.1;  // initial opacity
+            element.style.display = 'block';
+            var timer = setInterval(function () {
+                if (op >= 1) {
+                    clearInterval(timer);
+                }
+                element.style.opacity = op;
+                element.style.filter = 'alpha(opacity=' + op * 100 + ")";
+                op += op * 0.1;
+            }, 10);
+        }
+
+    </script>
 
     <!--  ########################################-->
 

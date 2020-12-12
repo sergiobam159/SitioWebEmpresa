@@ -124,6 +124,7 @@
     <Compile Include="Controllers\ManualController.cs" />
     <Compile Include="Controllers\NoticiaController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
+    <Compile Include="extensions\CustomHtmlHelepers.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -158,7 +159,9 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="imgs\estudiante-laptop.jpg" />
+    <Content Include="imgs\iconoYoutube.png" />
     <Content Include="imgs\internet-cloud.jpg" />
+    <Content Include="imgs\LecturaPdf.png" />
     <Content Include="imgs\loglocabeceratest.jpg" />
     <Content Include="imgs\LogoGrande.png" />
     <Content Include="js\animate.js" />

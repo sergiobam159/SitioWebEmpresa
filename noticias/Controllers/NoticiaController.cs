@@ -265,7 +265,7 @@ namespace noticias.Controllers
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add("@fecha", SqlDbType.DateTime).Value = DateTime.Now;
                 cmd.Parameters.Add("@lugar", SqlDbType.VarChar).Value = noticia.cLugarDePublicacion;
-                cmd.Parameters.Add("@usuarioId", SqlDbType.Int).Value = noticia.cUsuCodigo;
+                cmd.Parameters.Add("@usuarioId", SqlDbType.Int).Value = Int32.Parse(Session["CodigoUsuario"].ToString());
                 cmd.Parameters.Add("@autorId", SqlDbType.Int).Value = noticia.idAutor;
                 cmd.Parameters.Add("@seccionId", SqlDbType.Int).Value = noticia.NidNoticia_seccion;
                 cmd.Parameters.Add("@titulo", SqlDbType.VarChar).Value = noticia.cTituloPublicacion;
@@ -343,7 +343,7 @@ namespace noticias.Controllers
                 cmd.Parameters.Add("@id", SqlDbType.Int).Value = id;
                 cmd.Parameters.Add("@fecha", SqlDbType.DateTime).Value = DateTime.Now;
                 cmd.Parameters.Add("@lugar", SqlDbType.VarChar).Value = noticia.cLugarDePublicacion;
-                cmd.Parameters.Add("@usuarioId", SqlDbType.Int).Value = noticia.cUsuCodigo;
+                cmd.Parameters.Add("@usuarioId", SqlDbType.Int).Value = Int32.Parse( Session["CodigoUsuario"].ToString());
                 cmd.Parameters.Add("@autorId", SqlDbType.Int).Value = noticia.idAutor;
                 cmd.Parameters.Add("@seccionId", SqlDbType.Int).Value = noticia.NidNoticia_seccion;
                 cmd.Parameters.Add("@titulo", SqlDbType.VarChar).Value = noticia.cTituloPublicacion;

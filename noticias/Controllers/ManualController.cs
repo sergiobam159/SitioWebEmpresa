@@ -23,6 +23,7 @@ namespace noticias.Controllers
         SqlCommand cmd = new SqlCommand();
         SqlDataReader dr;
 
+        #region vistaUsuario
 
         public ActionResult vistaManuales()
         {
@@ -68,7 +69,7 @@ namespace noticias.Controllers
 
            
         }
-
+        #endregion
 
         #region listarManuales
         public void asignarHijos(List<Manual> manuales)
@@ -119,6 +120,12 @@ namespace noticias.Controllers
                 manual.dFechaRegistro = Convert.ToDateTime(dr["dFechaRegistro"]);
                 manual.ruta = Convert.ToString(dr["ruta"]);
                 manual.nombreArchivo = Convert.ToString(dr["cNombreArchivo"]);
+
+                if(manual.nombreArchivo.Length > 0)
+                {
+                    
+                    manual.archivoLectura = Descargar(manual.nombreArchivo);
+                }
                 manuales.Add(manual);
 
             }
@@ -139,7 +146,7 @@ namespace noticias.Controllers
 
         #endregion
 
-        #region #crearManuales
+        #region #crearManuales--SUBIDA Y DECARGA
         public void subirArchivo(HttpPostedFileBase archivoManual)
         {
 

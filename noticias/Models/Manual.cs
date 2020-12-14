@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-
+using System.Web.Mvc;
 
 namespace noticias.Models
 {
@@ -22,7 +22,7 @@ namespace noticias.Models
         public List<Manual> hijos;
         public HttpPostedFileBase archivo { get; set; }
         public string nombreArchivo { get; set; }
-
+        public FileResult archivoLectura { get; set; }
         public int NIdManual { get => nIdManual; set => nIdManual = value; }
         public string CNombreManual { get => cNombreManual; set => cNombreManual = value; }
         public string CDescripcion { get => cDescripcion; set => cDescripcion = value; }

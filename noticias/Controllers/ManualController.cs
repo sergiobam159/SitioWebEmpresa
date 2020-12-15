@@ -67,14 +67,14 @@ namespace noticias.Controllers
 
             return View(Padres);
 
-           
+
         }
         #endregion
 
         #region listarManuales
         public void asignarHijos(List<Manual> manuales)
         {
-            
+
 
             for (int j = 0; j < manuales.Count; j++)
             {
@@ -91,18 +91,18 @@ namespace noticias.Controllers
             }
         }
 
-       
 
-       
+
+
 
         public ActionResult ListarManuales()
         {
             List<Manual> manuales = new List<Manual>();
             List<Manual> manualesHijos = new List<Manual>();
-            
+
             con = conexion.Instancia.Conectar();
             con.Open();
-            cmd= new SqlCommand("ObtenerTodosLosManuales", con);
+            cmd = new SqlCommand("ObtenerTodosLosManuales", con);
             SqlDataReader dr = cmd.ExecuteReader();
             while (dr.Read())
             {
@@ -121,9 +121,9 @@ namespace noticias.Controllers
                 manual.ruta = Convert.ToString(dr["ruta"]);
                 manual.nombreArchivo = Convert.ToString(dr["cNombreArchivo"]);
 
-                if(manual.nombreArchivo.Length > 0)
+                if (manual.nombreArchivo.Length > 0)
                 {
-                    
+
                     manual.archivoLectura = Descargar(manual.nombreArchivo);
                 }
                 manuales.Add(manual);
@@ -138,7 +138,7 @@ namespace noticias.Controllers
 
             foreach (var manual in manuales)
             {
-                if(manual.CPadre == "") { Padres.Add(manual); }
+                if (manual.CPadre == "") { Padres.Add(manual); }
             }
 
             return View(Padres);
@@ -232,18 +232,18 @@ namespace noticias.Controllers
                 com.Connection = con;
                 com.CommandText = "select top 1 cJerarquia from MANUAL where cPadre is null order by cJerarquia desc";
                 dr = com.ExecuteReader();
-                
+
                 if (dr.Read())
                 {
-                    string ultimoPadre= dr["cJerarquia"].ToString();
-                    if(int.Parse(ultimoPadre) > 9) {
+                    string ultimoPadre = dr["cJerarquia"].ToString();
+                    if (int.Parse(ultimoPadre) > 9) {
                         int nuevopadre = int.Parse(ultimoPadre) + 1;
                         manual.cJerarquia = nuevopadre.ToString();
                     }
                     else
                     {
                         int nuevopadre = int.Parse(ultimoPadre) + 1;
-                        manual.cJerarquia = string.Concat(0,nuevopadre.ToString());
+                        manual.cJerarquia = string.Concat(0, nuevopadre.ToString());
 
                     }
 
@@ -261,7 +261,7 @@ namespace noticias.Controllers
                     manual.cUsuCodigo = (int)Session["CodigoUsuario"];
                     manual.version = "1.0";
                     manual.nombreArchivo = manual.archivo.FileName.ToString();
-                   
+
 
                     try
                     {
@@ -296,7 +296,7 @@ namespace noticias.Controllers
                     manual.cUsuCodigo = (int)Session["CodigoUsuario"];
                     manual.version = "1.0";
 
-                   
+
 
                     try
                     {
@@ -310,7 +310,7 @@ namespace noticias.Controllers
                         cmd.Parameters.Add("@bEstado", SqlDbType.Bit).Value = true;
                         //NO TIENE PADRE 
                         cmd.Parameters.AddWithValue("@cPadre", DBNull.Value);
-                        cmd.Parameters.AddWithValue("@cJerarquia",SqlDbType.VarChar).Value= manual.cJerarquia;
+                        cmd.Parameters.AddWithValue("@cJerarquia", SqlDbType.VarChar).Value = manual.cJerarquia;
                         cmd.Parameters.AddWithValue("@nombreArchivo", DBNull.Value);
                         cmd.Parameters.Add("@cTipoDocumento", SqlDbType.VarChar).Value = manual.CTipoDocumento;
                         cmd.Parameters.Add("@cUsuCodigo", SqlDbType.Int).Value = manual.cUsuCodigo;
@@ -368,22 +368,22 @@ namespace noticias.Controllers
 
 
 
-        
+
         [HttpGet]
-        public ActionResult CrearHijo(string  jerarquiaPadre)
+        public ActionResult CrearHijo(string jerarquiaPadre)
         {
             TempData["jerarquiaPadre"] = jerarquiaPadre;
 
             return View(new Manual());
-            
+
         }
 
         [HttpPost]
         public ActionResult CrearHijo(string jerarquiaPadre, Manual manual)
         {
             jerarquiaPadre = TempData["jerarquiaPadre"].ToString();
-            
-               var bandera = true;
+
+            var bandera = true;
 
             if (manual.cTipoDocumento == "PDF")
             {
@@ -412,7 +412,7 @@ namespace noticias.Controllers
                         manual.ruta = string.Concat(rutafisica.Replace("\\", "/"), filename);
                         if (!System.IO.Directory.Exists(directory))
                         {
-                            System.IO.Directory.CreateDirectory(directory);                            
+                            System.IO.Directory.CreateDirectory(directory);
                         }
                         if (!System.IO.File.Exists(manual.ruta))
                         {
@@ -480,7 +480,7 @@ namespace noticias.Controllers
                     // si el manual es un video se pasa el link del video solamente
                     manual.cUsuCodigo = (int)Session["CodigoUsuario"];
                     manual.version = "1.0";
-                    
+
                     manual.CPadre = jerarquiaPadre;
 
                     try
@@ -511,7 +511,7 @@ namespace noticias.Controllers
                         throw e;
                     }
                 }
-                
+
 
             }
 
@@ -524,28 +524,28 @@ namespace noticias.Controllers
         #endregion
 
         #region BorrarManuales
-        
+
         public ActionResult BorrarManual(int id)
         {
-           
-
-                try
-                {
-                    con = conexion.Instancia.Conectar();
-                    con.Open();
-                    cmd = new SqlCommand("BorrarManual", con);
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add("@nIdManual", SqlDbType.Int).Value = id;
-                    cmd.ExecuteNonQuery();
-
-                }
-                catch (Exception e)
-                {
-                    throw e;
-                }
 
 
-            
+            try
+            {
+                con = conexion.Instancia.Conectar();
+                con.Open();
+                cmd = new SqlCommand("BorrarManual", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@nIdManual", SqlDbType.Int).Value = id;
+                cmd.ExecuteNonQuery();
+
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+
+
             return RedirectToAction("ListarManuales", "Manual");
         }
 
@@ -587,6 +587,63 @@ namespace noticias.Controllers
                 throw ex;
             }
             return dtResponse;
+        }
+
+        #endregion
+
+        #region editar
+        [HttpGet]
+        public ActionResult Editar(int id)
+        {
+            Manual m = new Manual();
+            SqlDataAdapter da = new SqlDataAdapter();
+            DataTable dt = new DataTable();
+
+            con = conexion.Instancia.Conectar();
+            con.Open();
+
+            cmd = new SqlCommand("BuscarManual", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@id", id);
+            SqlDataReader dr = cmd.ExecuteReader();
+            dr.Read();
+            m.cNombreManual = Convert.ToString(dr["cNombreManual"]);
+            m.NIdManual = Convert.ToInt32(dr["nIDManual"]);
+            m.cDescripcion = Convert.ToString(dr["cDescripcion"]);
+            m.bEstado = Convert.ToBoolean(dr["bEstado"]);
+            m.cPadre = Convert.ToString(dr["cPadre"]);
+            m.cJerarquia = Convert.ToString(dr["cJerarquia"]);
+            m.CTipoDocumento = Convert.ToString(dr["ctipoDocumento"]);
+            m.cUsuCodigo = Convert.ToInt32(dr["CUsuCodigo"]);
+            m.version = Convert.ToString(dr["version"]);
+            m.dFechaRegistro = Convert.ToDateTime(dr["dFechaRegistro"]);
+            m.ruta = Convert.ToString(dr["ruta"]);
+            m.nombreArchivo = Convert.ToString(dr["cNombreArchivo"]);
+            return View(m);
+        }
+
+        [HttpPost]
+        public ActionResult Editar(int id, Manual manual){
+
+            con = conexion.Instancia.Conectar();
+            con.Open();
+            cmd = new SqlCommand("EditarManual", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@cNombreManual", SqlDbType.VarChar).Value = manual.CNombreManual;
+            cmd.Parameters.Add("@cDescripcion", SqlDbType.VarChar).Value = manual.cDescripcion;
+            cmd.Parameters.Add("@bEstado", SqlDbType.Bit).Value = true;
+            //NO TIENE PADRE 
+            cmd.Parameters.AddWithValue("@cPadre", SqlDbType.VarChar).Value = manual.CPadre;
+            // SE AUTOASIGNA JERARQUIA EN SQL
+            cmd.Parameters.Add("@cTipoDocumento", SqlDbType.VarChar).Value = manual.CTipoDocumento;
+            cmd.Parameters.Add("@cUsuCodigo", SqlDbType.Int).Value = manual.cUsuCodigo;
+            cmd.Parameters.Add("@version", SqlDbType.VarChar).Value = manual.version;
+            cmd.Parameters.Add("@dFechaRegistro", SqlDbType.DateTime).Value = DateTime.Today;
+            cmd.Parameters.Add("@ruta", SqlDbType.VarChar).Value = manual.ruta;
+            cmd.Parameters.Add("@nombreArchivo", SqlDbType.VarChar).Value = manual.nombreArchivo;
+            cmd.ExecuteNonQuery();
+            con.Close();
+            return RedirectToAction("ListarManuales", "Manual");
         }
 
         #endregion

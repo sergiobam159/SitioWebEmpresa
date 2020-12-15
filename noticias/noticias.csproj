@@ -221,6 +221,7 @@
     <Content Include="Views\Manual\CrearPadre.cshtml" />
     <Content Include="Views\Manual\CrearHijo.cshtml" />
     <Content Include="Views\Manual\vistaManuales.cshtml" />
+    <Content Include="Views\Manual\Editar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

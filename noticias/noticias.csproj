@@ -159,6 +159,8 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="imgs\estudiante-laptop.jpg" />
+    <Content Include="imgs\expand-arrow--v2.png" />
+    <Content Include="imgs\expand-arrow-up--v2.png" />
     <Content Include="imgs\iconoYoutube.png" />
     <Content Include="imgs\internet-cloud.jpg" />
     <Content Include="imgs\LecturaPdf.png" />

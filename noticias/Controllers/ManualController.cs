@@ -604,7 +604,7 @@ namespace noticias.Controllers
 
             cmd = new SqlCommand("BuscarManual", con);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@id", id);
+            cmd.Parameters.AddWithValue("@nIdManual", id);
             SqlDataReader dr = cmd.ExecuteReader();
             dr.Read();
             m.cNombreManual = Convert.ToString(dr["cNombreManual"]);

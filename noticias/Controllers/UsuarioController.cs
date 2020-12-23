@@ -72,6 +72,7 @@ namespace noticias.Controllers
                     {
                         if (seleccionRadioButton == "Noticias")
                         {
+                            TempData["paginaAcual"] = 1;
                             return RedirectToAction("vistaCrud", "Noticia", new { inicial = 0, elementos = 5 });
                         }
                         else

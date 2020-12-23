@@ -24,7 +24,7 @@ namespace noticias.Controllers
         // LISTADO DE NOTICIAS
         public ActionResult vistaCrud(int inicial, int elementos)
         {
-
+           
             return View(ListadoNoticia(inicial,elementos));
         }
         #endregion

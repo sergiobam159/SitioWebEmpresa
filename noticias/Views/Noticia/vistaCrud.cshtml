@@ -6,11 +6,11 @@
     ViewBag.Title = "vistaCrud";
     Layout = "~/Views/_LayoutPage1.cshtml";
 }
-
-<h2 >ADMINISTRAR NOTICIAS</h2>
-<button id="botonCrear">
-@Html.ActionLink("Crear", "Crear")
-    </button>
+@using noticias.extensions;
+<h2>ADMINISTRAR NOTICIAS</h2>
+<button id="botonCrear" class ="btn btn-primary">
+    @Html.ActionLink("Crear", "Crear", null,new { style="color:#FFFFFF; font-weight: 700"})
+</button>
 <div style="overflow-x:auto;">
     <div class="row" style="width:100%">
         <div class="col-sm-3"></div>
@@ -20,71 +20,91 @@
 
     </div>
 
-            <table id="tablaNoticias">
-                <thead>
-                    <tr>
-                        <th> ID</th>
-                        <th>Titulo Noticia</th>
-                        <th>Fecha Publicado</th>
-                        <th>Autor</th>
-                        <th>Usuario</th>
-                        <th>Opciones</th>
+    <table id="tablaNoticias">
+        <thead>
+            <tr>
+                <th> ID</th>
+                <th>Titulo Noticia</th>
+                <th>Fecha Publicado</th>
+                <th>Autor</th>
+                <th>Usuario</th>
+                <th>Opciones</th>
 
 
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>@item.nIdPublicacion</td>
-                            <td>@item.cTituloPublicacion</td>
-                            <td>@item.dFechaPublicacion</td>
-                            <td>@item.idAutor</td>
-                            <td>@item.cUsuCodigo</td>
-                            <td>
-                                <ul style="padding-left:0px">
-                                    <a title="Eliminar" onclick="return confirm('¿Esta seguro?');" href="~/Noticia/EliminarNoticia/@item.nIdPublicacion">X</a>
-                                    @Html.ActionLink("Editar", "Editar", new { id = item.nIdPublicacion })
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.nIdPublicacion</td>
+                    <td>@item.cTituloPublicacion</td>
+                    <td>@item.dFechaPublicacion</td>
+                    <td>@item.idAutor</td>
+                    <td>@item.cUsuCodigo</td>
+                    <td>
+                        <ul style="padding-left:0px">
+                            <style>
+                                img {
+                                    width: 35%;
+                                }
+                            </style>
 
-                                </ul>
-                            </td>
-                        </tr>
-                    }
+                            @Html.ImageActionLink("Editar", "Editar", "Noticia", new { id = item.NIdPublicacion }, new { style = "width:50%" }, "~/imgs/icono-editar.png")
+                            @Html.ImageActionLink("Eliminar", "EliminarNoticia", "Noticia", new { id = item.nIdPublicacion }, new { style = "width:50%", onclick="return confirm('¿Esta seguro?');"  }, "~/imgs/icono-borrar.png")
 
-                </tbody>
-            </table>
-        </div>
+                            <!-- <a title="Eliminar" onclick="return confirm('¿Esta seguro?');" href="~/Noticia/EliminarNoticia/@item.nIdPublicacion">X</a>
+     @Html.ActionLink("Editar", "Editar", new { id = item.nIdPublicacion })-->
+
+                        </ul>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
 
 
 <nav aria-label="Page navigation example" id="navegadorLista">
     <ul class="pagination">
         <li class="page-item">
-             
-            @if (ViewBag.IdPrimeraPublicacion!=Model.First().NIdPublicacion)
+
+            @if (ViewBag.IdPrimeraPublicacion < Model.First().nIdPublicacion)
             {
-                @Html.ActionLink("Atras", "vistaCrud", new { inicial = (Model.Last().nIdPublicacion - 10), elementos = 5 })
+                
+                @Html.ActionLink("Atras", "vistaCrud", new { inicial = (Model.First().nIdPublicacion-9), elementos = 5 })
             }
         </li>
-        @for (int i = 0; i < ViewBag.cantidadDePaginas-1; i++)
+        @for (int i = 0; i < ViewBag.cantidadDePaginas - 1; i++)
         {
-            //AQUI SE TIENE QUE LLAMAR A LA FUNCION VISTACRUD PERO CON LOS VALORES CAMBIADOS  CON EL iAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-            //AQUI EVALUA SI LA ULTIMA PUBLICACION DE LA LISTA MODEL ES LA ULTIMA DE LA BASE DE DATOS
-    <li class="page-item">
-        @{
-            @Html.ActionLink((i + 1).ToString(), "vistaCrud", new { inicial = ((5*(i*1))), elementos = 5 })
-        }
+            
+            string clase;
 
+            if ((Model.Last().NIdPublicacion<5*(i+1))||( Model.First().nIdPublicacion>5*(i+1)) )
+            {
+                clase = "page-item";
+            }
+            else { clase = "page-item active";
+                TempData["paginaAcual"] = i;
+            }
+
+            <li class="@clase">
+                @{
+                     
+                    @Html.ActionLink((i + 1).ToString(), "vistaCrud", new { inicial = ((5 * (i * 1))), elementos = 5 })
+                }
+
+            </li>
+
+        }
+        <li class="page-item">
+            @if (Model.Last().nIdPublicacion != ViewBag.IdUltimaPublicacion)
+            {
+                @Html.ActionLink(("Siguiente"), "vistaCrud", new { inicial = (Int16.Parse(TempData["paginaAcual"].ToString())*5)+5, elementos = 5 })
+            }
         </li>
-        
-        }
-    <li class="page-item">
-        @if (Model.Last().nIdPublicacion!=ViewBag.IdUltimaPublicacion)
-        {
-            @Html.ActionLink(("Siguiente"), "vistaCrud", new { inicial = (Model.Last().nIdPublicacion - 1), elementos = 5 })
-        }
-    </li>
-        </ul>
+    </ul>
 </nav>
 
 

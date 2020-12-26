@@ -68,11 +68,13 @@ namespace noticias.Controllers
                     Session["contraseña"] = user.cClaveUsuario;
                     Session["activo"] = user.Activo;
                     Session["CodigoUsuario"] = user.cUsuCodigo;
+                    TempData["paginaAcual"] = 1;
+                    ViewBag.paginaActual = 1;
                     if (user.Activo == true)
                     {
                         if (seleccionRadioButton == "Noticias")
                         {
-                            TempData["paginaAcual"] = 1;
+                            
                             return RedirectToAction("vistaCrud", "Noticia", new { inicial = 0, elementos = 5 });
                         }
                         else

@@ -20,7 +20,7 @@
     <div class="form-group">
        
         @Html.LabelFor(model => model.CTituloPublicacion, "Titulo: ", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div  style="padding:0px;display:inline-block; float:left ">*</div>
+        <div style="padding:0px;display:inline-block; float:left "> <text style="color:red">*</text></div>
         <div class="col-sm-9">
              
             @Html.EditorFor(model => model.CTituloPublicacion, new { htmlAttributes = new { @class = "form-control", @required="" } })
@@ -30,16 +30,19 @@
 
     <div class="form-group">
         @Html.LabelFor(model => model.CContenidoPublicacion, "Contenido: ", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div style="padding:0px;display:inline-block; float:left ">*</div>
+        <div style="padding:0px;display:inline-block; float:left "> <text style="color:red">*</text></div>
         <div class="col-md-9">
             @Html.TextAreaFor(model => model.CContenidoPublicacion, new { @cols = "50", @rows = "8", @style = " width: -webkit-fill-available;", @onclick = "avisoNoticia(); this.onclick=null;", @required = "" })
             @Html.ValidationMessageFor(model => model.CContenidoPublicacion, "", new { @class = "text-danger" })
+            <p>Para poder ingresar un texto se necesita separar los parrafor con asteriscos (*)</p>
         </div>
+
     </div>
+    
 
     <div class="form-group">
         @Html.LabelFor(model => model.CLugarDePublicacion, "Lugar:", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div style="padding:0px;display:inline-block; float:left ">*</div>
+        <div style="padding:0px;display:inline-block; float:left "> <text style="color:red">*</text></div>
         <div class="col-md-9">
             @Html.EditorFor(model => model.CLugarDePublicacion, new { htmlAttributes = new { @class = "form-control", @required = "" } })
             @Html.ValidationMessageFor(model => model.CLugarDePublicacion, "", new { @class = "text-danger" })
@@ -50,7 +53,7 @@
 
     <div class="form-group">
         @Html.LabelFor(model => model.NidNoticia_seccion, "Sección", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div style="padding:0px;display:inline-block; float:left ">*</div>
+        <div style="padding:0px;display:inline-block; float:left "> <text style="color:red">*</text></div>
         <div class="col-md-9">
 
 
@@ -72,7 +75,7 @@
 
     <div class="form-group">
         @Html.LabelFor(model => model.CSubtitulo, "Subtitulo: ", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div style="padding:0px;display:inline-block; float:left ">*</div>
+        <div style="padding:0px;display:inline-block; float:left "> <text style="color:red">*</text></div>
         <div class="col-md-9">
             @Html.EditorFor(model => model.CSubtitulo, new { htmlAttributes = new { @class = "form-control", @required = "" } })
             @Html.ValidationMessageFor(model => model.CSubtitulo, "", new { @class = "text-danger" })
@@ -81,10 +84,11 @@
 
     <div class="form-group">
         @Html.LabelFor(model => model.CTextoSubtitulo, "Contenido subtitulo:", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div style="padding:0px;display:inline-block; float:left ">*</div>
+        <div style="padding:0px;display:inline-block; float:left "> <text style="color:red">*</text></div>
         <div class="col-md-9">
             @Html.TextAreaFor(model => model.CTextoSubtitulo, new { @cols = "50", @rows = "8", @style = " width: -webkit-fill-available;", @onclick = "avisoNoticia(); this.onclick=null;", @required = "" })
             @Html.ValidationMessageFor(model => model.CTextoSubtitulo, "", new { @class = "text-danger" })
+            <p>Para poder ingresar un texto se necesita separar los parrafor con asteriscos (*)</p>
         </div>
     </div>
     <!--
@@ -98,7 +102,7 @@
         -->
 <div class="form-group">
     @Html.LabelFor(model => model.IdAutor, "Autor: ", htmlAttributes: new { @class = "control-label col-md-2" })
-    <div style="padding:0px;display:inline-block; float:left ">*</div>
+    <div style="padding:0px;display:inline-block; float:left "> <text style="color:red">*</text></div>
     <div class="col-md-9">
         @Html.EditorFor(model => model.IdAutor, new { htmlAttributes = new { @class = "form-control", @required = "" } })
         @Html.ValidationMessageFor(model => model.IdAutor, "", new { @class = "text-danger" })

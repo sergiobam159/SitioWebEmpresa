@@ -17,21 +17,32 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.CNombreManual,"Nombre:", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CNombreManual, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.CNombreManual, "", new { @class = "text-danger" })
-            </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.CNombreManual, "Nombre:", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div style="padding:0px;display:inline-block; float:left "> <text style="color:red">*</text></div>
+        <div class="col-md-9">
+            @Html.EditorFor(model => model.CNombreManual, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.CNombreManual, "", new { @class = "text-danger" })
         </div>
+    </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.CDescripcion,"Descripcion:" ,htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CDescripcion, new { htmlAttributes = new { @class = "form-control", @id = "prueba" } })
-                @Html.ValidationMessageFor(model => model.CDescripcion, "", new { @class = "text-danger" })
-            </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.CDescripcion, "Descripcion:", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div style="padding:0px;display:inline-block; float:left "> <text style="color:red">*</text></div>
+        <div class="col-md-9">
+            @Html.EditorFor(model => model.CDescripcion, new { htmlAttributes = new { @class = "form-control", @id = "prueba" } })
+            @Html.ValidationMessageFor(model => model.CDescripcion, "", new { @class = "text-danger" })
         </div>
+    </div>
+
+    <div style="padding-bottom: 11px;padding-top: 20px;">
+        seleccione una opcion: 
+        <div style="padding:0px;display:inline-block;  ">
+            <text style="color:red">*</text>
+        </div>
+       
+    </div>
+
         <div class="form-group">
 
             <div class="col-md-10">
@@ -45,15 +56,15 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.ruta, htmlAttributes: new { @class = "control-label col-md-2", @id="lblRuta" })
-            <div class="col-md-10">
+            @Html.LabelFor(model => model.ruta, htmlAttributes: new { @class = "control-label col-md-2", @id = "lblRuta" })
+            <div class="col-md-9">
                 @Html.EditorFor(model => model.ruta, new { htmlAttributes = new { @class = "form-control", @id = "cruta" } })
                 @Html.ValidationMessageFor(model => model.ruta, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.archivo, htmlAttributes: new { @class = "control-label col-md-2", @id="lblfile" })
+            @Html.LabelFor(model => model.archivo, htmlAttributes: new { @class = "control-label col-md-2", @id = "lblfile" })
             <div class="col-md-10">
                 <input type="file" name="archivo" id="archivo" />
             </div>
@@ -61,7 +72,7 @@
 
         <div class="form-group" style="text-align:center">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" style="margin-right:10%" />
+                <input type="submit" value="Crear" class="btn btn-default" style="margin-right:10%" />
                 @Html.ActionLink("Cancelar", "ListarManuales")
             </div>
         </div>

@@ -422,7 +422,7 @@ namespace noticias.Controllers
                         if (drd.Read())
                         {
                             string base64ImgSec = (Convert.ToString(drd["iImagen"]));
-
+                            n.imgSecundaria.descripcion = Convert.ToString(drd["cDescripcion"]);
                             n.imgSecundaria.base64String = base64ImgSec;
                         }
                         conect.Close();

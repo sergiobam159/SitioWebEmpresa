@@ -368,6 +368,95 @@ namespace noticias.Controllers
         #endregion
         #region inicio
 
+        public ActionResult MostrarSeccion(int seccion)
+        {
+            List<Noticia> lista = new List<Noticia>();
+            try
+            {
+
+                // cambiar 
+                con = conexion.Instancia.Conectar();
+                con.Open();
+                cmd = new SqlCommand("[UtimasNoticiasPorSeccion]", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@seccion", seccion);
+                SqlDataReader dr = cmd.ExecuteReader();
+                if (dr.Read())
+                {
+                    while (dr.Read())
+                    {
+
+
+                        Noticia n = new Noticia();
+                        n.Img = new Imagen();
+                        n.imgSecundaria = new Imagen();
+                        n.NIdPublicacion = Convert.ToInt16(dr["nIdPublicacion"]);
+                        n.DFechaPublicacion = Convert.ToDateTime(dr["dFechaPublicacion"]);
+                        n.CContenidoPublicacion = Convert.ToString(dr["cContenidoPublicacion"]);
+                        n.CTituloPublicacion = Convert.ToString(dr["cTituloPublicacion"]);
+                        n.CLugarDePublicacion = Convert.ToString(dr["cLugarDePublicacion"]);
+                        n.CUsuCodigo = Convert.ToInt32(dr["cUsuCodigo"]);
+                        n.NidNoticia_seccion = Convert.ToString(dr["nidNoticia.Seccion"]);
+                        n.CSubtitulo = Convert.ToString(dr["csubtitulo"]);
+                        n.CTextoSubtitulo = Convert.ToString(dr["cTextoSubtitulo"]);
+
+                        n.NombreDeSeccion = Convert.ToString(dr["cNombreSeccion"]);
+                        n.DescripcionDeImagen = Convert.ToString(dr["cDescripcion"]);
+                        n.NombreAutor = Convert.ToString(dr["cPerNombre"]);
+                        n.ApellidoAutor = Convert.ToString(dr["cPerApellido"]);
+                        //VIDEO[idVideo]
+                        n.IdAutor = Convert.ToInt16(dr["idAutor"]);
+                        //imagen ↓
+
+
+                        if (!dr.IsDBNull(13))
+                        {
+                            int IdImagenSec = Convert.ToInt16(dr["nIdNoticia.PubimagenSEC"]);
+
+                            SqlConnection conect = new SqlConnection();
+                            conect = conexion.Instancia.Conectar();
+                            conect.Open();
+                            SqlCommand cmdd = new SqlCommand("[ObtenerImagenSecundaria]", conect);
+                            cmdd.CommandType = CommandType.StoredProcedure;
+                            cmdd.Parameters.AddWithValue("@id", IdImagenSec);
+                            SqlDataReader drd = cmdd.ExecuteReader();
+                            if (drd.Read())
+                            {
+                                string base64ImgSec = (Convert.ToString(drd["iImagen"]));
+                                n.imgSecundaria.descripcion = Convert.ToString(drd["cDescripcion"]);
+                                n.imgSecundaria.base64String = base64ImgSec;
+                            }
+                            conect.Close();
+
+                        }
+
+                        string base64ImgPrin = (Convert.ToString(dr["iImagen"]));
+                        n.Img.Base64String = base64ImgPrin;
+
+                        lista.Add(n);
+
+
+
+
+                    }
+                }
+                else
+                {
+                    return View("No_Existen_noticias");
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            return View("InicioNoticias",lista);
+
+
+        }
+
+
+
+
         public ActionResult InicioNoticias()
         {
 

@@ -12,7 +12,7 @@ namespace noticias.Controllers
         {
             return RedirectToAction("InicioNoticias", "Noticia");
         }
-        //asdasdasd
+        //asdasdasdasdasdasd
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";

@@ -31,8 +31,12 @@
         }
     </style>
         -->
-        <table class="table" style="width:80%; margin:auto; color:rgb(51, 51,51); ">
-            <tr>
+        <table class="table" style="        width: 80%;
+        margin: auto;
+        color: black;
+">
+            <tr style="        background-color: rgba(64, 193, 221, 1)
+">
 
                 <th>
                     @Html.DisplayNameFor(model => model.CNombreManual)
@@ -70,7 +74,8 @@
 
                 foreach (var item in Model)
                 {
-                    <tr id="@(item.CJerarquia)" class="@(item.CJerarquia)" onclick="mostrar(this.id)" style="background-color:#E9E9E970;display: table-row;">
+                    <tr id="@(item.CJerarquia)" class="@(item.CJerarquia)" onclick="mostrar(this.id)" style="        background-color: rgba(186, 232, 243, 0.45);
+        display: table-row;">
 
                         <td>
                             @Html.DisplayFor(manualesItem => item.CNombreManual)
@@ -128,7 +133,7 @@
                             @{ if (item.hijos.Count == 0)
                                 {
                                     <a title="Borrar" onclick="return confirm('¿Esta seguro?');" href="~/Manual/BorrarManual/@item.nIdManual">Borrar</a>
-
+                                    
                                 }
                                 else
                                 {
@@ -136,6 +141,7 @@
                                 }
 
                             }
+
                         </td>
 
                         @MostrarHijos(item.hijos,0)
@@ -149,98 +155,102 @@ x = x + 1;
 string colorcito;
 if(x%3 == 0)
 {
-    colorcito = "#F9F9F905";
+    colorcito = "rgba(186, 232, 243, 0.42)";
 }
 else
 {
     if (x % 2 == 0)
     {
-        colorcito = "#F3F3F350";
+        colorcito = "rgba(186, 232, 243, 0.13)";
     }
     else
     {
-            colorcito = "#EDEDED70";
+            colorcito = "rgba(186, 232, 243, 0.25)";
     }
 }
 foreach (var item in manuales)
 {
 
 
-                    <tr id="@(item.CJerarquia)" class="@(item.cJerarquia)" onclick="mostrar(this.id)" style="padding-left:50px; display: none; background-color:@(colorcito)">
-                        @{
-                            for (int i = 1; i < (item.cJerarquia.Length / 2); i++)
-                            {
-                                <td style="border:none; background-color:white"></td>
-                            }
+        <tr id="@(item.CJerarquia)" class="@(item.cJerarquia)" onclick="mostrar(this.id)" style="padding-left:50px; display: none; background-color:@(colorcito)">
+            @{
+                for (int i = 1; i < (item.cJerarquia.Length / 2); i++)
+                {
+                    <td style="border:none; background-color:white"></td>
+                }
             }
 
-                        <td>
-                            @Html.DisplayFor(manualesItem => item.CNombreManual)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(manualesItem => item.CDescripcion)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(manualesItem => item.BEstado)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(manualesItem => item.CPadre)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(manualesItem => item.CJerarquia)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(manualesItem => item.CTipoDocumento)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(manualesItem => item.CUsuCodigo)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(manualesItem => item.Version)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(manualesItem => item.DFechaRegistro)
-                        </td>
+            <td>
+                @Html.DisplayFor(manualesItem => item.CNombreManual)
+            </td>
+            <td>
+                @Html.DisplayFor(manualesItem => item.CDescripcion)
+            </td>
+            <td>
+                @Html.DisplayFor(manualesItem => item.BEstado)
+            </td>
+            <td>
+                @Html.DisplayFor(manualesItem => item.CPadre)
+            </td>
+            <td>
+                @Html.DisplayFor(manualesItem => item.CJerarquia)
+            </td>
+            <td>
+                @Html.DisplayFor(manualesItem => item.CTipoDocumento)
+            </td>
+            <td>
+                @Html.DisplayFor(manualesItem => item.CUsuCodigo)
+            </td>
+            <td>
+                @Html.DisplayFor(manualesItem => item.Version)
+            </td>
+            <td>
+                @Html.DisplayFor(manualesItem => item.DFechaRegistro)
+            </td>
 
-                        <td>
-                            @{
-                                if (item.cTipoDocumento == "PDF")
-                                {
-                                    if (item.nombreArchivo.Length > 0)
-                                    {
-                                        @Html.ActionLink("Descargar", "Descargar", new { NombreArchivo = item.nombreArchivo }, null);
-                                    }
-                                }
-                                else
-                                {
-                                    <a href="@item.ruta" target="_blank">Ir a Video</a>
-                                }
-                            }
-                        </td>
-                        <td>
-                            <text>hijos: @item.hijos.Count </text>
-                            @Html.ActionLink("Nuevo Hijo", "CrearHijo", new { jerarquiaPadre = item.CJerarquia })
-                        </td>
-                        <td>
-
-                            @{ if (item.hijos.Count == 0)
-                                {
-                                    @Html.ActionLink("Borrar", "BorrarManual", new { id = item.nIdManual });
-                                }
-                                else
-                                {
-                                    <a onclick="return alert('No se puede borrar un manual con manuales hijos Elimine primero los siguientes hijos:');">Borrar</a>
-                                }
-
-                            }
-                        </td>
-
-                        @if (item.hijos.Count > 0)
-            {
-                @MostrarHijos(item.hijos,x)
+            <td>
+                @{
+                    if (item.cTipoDocumento == "PDF")
+                    {
+                        if (item.nombreArchivo.Length > 0)
+                        {
+                            @Html.ActionLink("Descargar", "Descargar", new { NombreArchivo = item.nombreArchivo }, null);
                         }
+                    }
+                    else
+                    {
+                        <a href="@item.ruta" target="_blank">Ir a Video</a>
+                    }
+                }
+            </td>
+            <td>
+                <text>hijos: @item.hijos.Count </text>
+                @Html.ActionLink("Nuevo Hijo", "CrearHijo", new { jerarquiaPadre = item.CJerarquia })
+            </td>
+            <td>
 
-                    </tr>
+                @{ if (item.hijos.Count == 0)
+                    {
+                        @Html.ActionLink("Borrar", "BorrarManual", new { id = item.nIdManual });
+
+
+                    }
+                    else
+                    {
+                        <a onclick="return alert('No se puede borrar un manual con manuales hijos Elimine primero los siguientes hijos:');">Borrar</a>
+                    }
+
+                }
+                <text></text>
+                @Html.ActionLink("Editar", "Editar", new { id = item.nIdManual })
+            </td>
+
+                @if (item.hijos.Count > 0)
+                {
+                    @MostrarHijos(item.hijos, x)
+                }
+
+            </tr>
 
                 }
 

@@ -628,19 +628,33 @@ namespace noticias.Controllers
             con = conexion.Instancia.Conectar();
             con.Open();
             cmd = new SqlCommand("EditarManual", con);
+            cmd.Parameters.AddWithValue("@id", id);
             cmd.CommandType = CommandType.StoredProcedure;
+            if (manual.CPadre == null)
+            {
+                cmd.Parameters.AddWithValue("@cPadre", DBNull.Value);
+            }
+            else
+            {
+                cmd.Parameters.AddWithValue("@cPadre", SqlDbType.VarChar).Value = manual.CPadre;
+            }
+            if (manual.nombreArchivo == null)
+            {
+                cmd.Parameters.AddWithValue("@nombreArchivo", DBNull.Value);
+            }
+
             cmd.Parameters.Add("@cNombreManual", SqlDbType.VarChar).Value = manual.CNombreManual;
             cmd.Parameters.Add("@cDescripcion", SqlDbType.VarChar).Value = manual.cDescripcion;
             cmd.Parameters.Add("@bEstado", SqlDbType.Bit).Value = true;
-            //NO TIENE PADRE 
-            cmd.Parameters.AddWithValue("@cPadre", SqlDbType.VarChar).Value = manual.CPadre;
-            // SE AUTOASIGNA JERARQUIA EN SQL
+            
+            
+            cmd.Parameters.AddWithValue("@cJerarquia", SqlDbType.VarChar).Value = manual.cJerarquia;
             cmd.Parameters.Add("@cTipoDocumento", SqlDbType.VarChar).Value = manual.CTipoDocumento;
             cmd.Parameters.Add("@cUsuCodigo", SqlDbType.Int).Value = manual.cUsuCodigo;
             cmd.Parameters.Add("@version", SqlDbType.VarChar).Value = manual.version;
             cmd.Parameters.Add("@dFechaRegistro", SqlDbType.DateTime).Value = DateTime.Today;
             cmd.Parameters.Add("@ruta", SqlDbType.VarChar).Value = manual.ruta;
-            cmd.Parameters.Add("@nombreArchivo", SqlDbType.VarChar).Value = manual.nombreArchivo;
+            
             cmd.ExecuteNonQuery();
             con.Close();
             return RedirectToAction("ListarManuales", "Manual");
